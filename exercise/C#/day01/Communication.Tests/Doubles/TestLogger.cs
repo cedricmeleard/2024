@@ -1,9 +1,8 @@
-namespace Communication.Tests.Doubles
+namespace Communication.Tests.Doubles;
+
+public class TestLogger : ILogger
 {
-    public class TestLogger : ILogger
-    {
-        private string? _message;
-        public void Log(string? message) => _message = message;
-        public string? LoggedMessage() => _message;
-    }
+    private string? _message;
+    public void Log(string? message) => _message = message;
+    public string? LoggedMessage() => _message;
 }
