@@ -1,4 +1,3 @@
-using Communication.Domain;
 using Communication.Tests.Doubles;
 using FluentAssertions;
 using Xunit;
@@ -16,9 +15,9 @@ public class SantaCommunicatorTests
 
     [Fact]
     public void ComposeMessage()
-        => _communicator.ComposeMessage(
-                new ReindeerName(Dasher), 
-                new Location(NorthPole, 5), 
+        => _communicator.ComposeMessage(ReindeerTester.Named(Dasher)
+                    .LocatedAt(NorthPole, 5)
+                    .Summon(), 
                 NumberOfDayBeforeChristmas)
             .Should()
             .Be("Dear Dasher, please return from North Pole in 17 day(s) to be ready and rest before Christmas.");
@@ -26,9 +25,9 @@ public class SantaCommunicatorTests
     [Fact]
     public void ShouldDetectOverdueReindeer()
     {
-        var overdue = _communicator.IsOverdue(
-            new ReindeerName(Dasher), 
-            new Location(NorthPole, NumberOfDayBeforeChristmas), 
+        var overdue = _communicator.IsOverdue(ReindeerTester.Named(Dasher)
+                .LocatedAt( NorthPole, NumberOfDayBeforeChristmas)
+                .Summon(), 
             NumberOfDayBeforeChristmas, 
             _logger);
 
@@ -38,11 +37,13 @@ public class SantaCommunicatorTests
 
     [Fact]
     public void ShouldReturnFalseWhenNoOverdue()
-        => _communicator.IsOverdue(
-                new ReindeerName(Dasher), 
-                new Location(NorthPole, NumberOfDayBeforeChristmas - NumberOfDaysToRest - 1), 
+        => _communicator.IsOverdue(ReindeerTester.Named(Dasher)
+            .LocatedAt( NorthPole, NumberOfDayBeforeChristmas - NumberOfDaysToRest - 1)
+            .Summon(), 
                 NumberOfDayBeforeChristmas, 
                 _logger)
             .Should()
             .BeFalse();
+
+    
 }

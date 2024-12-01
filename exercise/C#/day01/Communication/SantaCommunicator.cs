@@ -5,24 +5,22 @@ namespace Communication;
 public class SantaCommunicator(int numberOfDaysToRest)
 {
     public string ComposeMessage(
-        ReindeerName reindeerName,
-        Location location,
+        Reindeer reindeer,
         int numberOfDaysBeforeChristmas)
     {
-        var daysBeforeReturn = DaysBeforeReturn(location.NumbersOfDaysForComingBack, numberOfDaysBeforeChristmas);
+        var daysBeforeReturn = DaysBeforeReturn(reindeer.NumbersOfDaysForComingBack, numberOfDaysBeforeChristmas);
         return
-            $"Dear {reindeerName}, please return from {location.CurrentLocation} in {daysBeforeReturn} day(s) to be ready and rest before Christmas.";
+            $"Dear {reindeer.Name}, please return from {reindeer.CurrentLocation} in {daysBeforeReturn} day(s) to be ready and rest before Christmas.";
     }
 
     public bool IsOverdue(
-        ReindeerName reindeerName,
-        Location location,
+        Reindeer reindeer,
         int numberOfDaysBeforeChristmas,
         ILogger logger)
     {
-        if (DaysBeforeReturn(location.NumbersOfDaysForComingBack, numberOfDaysBeforeChristmas) <= 0)
+        if (DaysBeforeReturn(reindeer.NumbersOfDaysForComingBack, numberOfDaysBeforeChristmas) <= 0)
         {
-            logger.Log($"Overdue for {reindeerName} located {location.CurrentLocation}.");
+            logger.Log($"Overdue for {reindeer.Name} located {reindeer.CurrentLocation}.");
             return true;
         }
 
