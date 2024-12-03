@@ -1,55 +1,86 @@
 using FluentAssertions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 
-namespace Preparation.Tests
+namespace Preparation.Tests;
+
+public record GiftData(string Name, double Weight, string Color, string Material);
+public class SantaWorkshopServiceTests
 {
-    public class SantaWorkshopServiceTests
+    private const string RecommendedAge = "recommendedAge";
+    private readonly SantaWorkshopService _service = new();
+    
+    private static Arbitrary<GiftData> ArbitraryGiftDatas
+        => (from giftName in Arb.Generate<string>()
+                from weight in Gen.Choose(1, 5)
+                from color in Arb.Generate<string>()
+                from material in Arb.Generate<string>()
+                select new GiftData(giftName, weight, color, material))
+            .ToArbitrary();
+    
+    
+    [Property]
+    public void PrepareGift_WithValidToy_ShouldInstantiateIt()
     {
-        private const string RecommendedAge = "recommendedAge";
-        private readonly SantaWorkshopService _service = new();
+        Prop.ForAll(
+                ArbitraryGiftDatas,
+                arb => _service
+                    .PrepareGift(arb.Name, arb.Weight, arb.Color, arb.Material)
+                    .Should()
+                    .NotBeNull())
+            .QuickCheckThrowOnFailure();
+    }
 
-        [Fact]
-        public void PrepareGift_WithValidToy_ShouldInstantiateIt()
-        {
-            const string giftName = "Bitzee";
-            const double weight = 3;
-            const string color = "Purple";
-            const string material = "Plastic";
+    [Property]
+    public void RetrieveAttributeOnGift(int attribute)
+    {
+        Prop.ForAll(
+            ArbitraryGiftDatas,
+            (data) =>
+            {
+                var gift = _service.PrepareGift(data.Name, data.Weight, data.Color, data.Material);
+                gift.AddAttribute(RecommendedAge, attribute.ToString());
+                gift.RecommendedAge()
+                    .Should()
+                    .Be(attribute);
+            })
+            .QuickCheckThrowOnFailure();
+    }
+    
+    [Property]
+    public void RetrieveAttributeOnGift_When_Attribute_IsNot_An_Int(string attribute)
+    {
+        Prop.ForAll(
+                ArbitraryGiftDatas,
+                (data) => (!int.TryParse(attribute, out _))
+                    .Implies(() =>
+                    {
+                        var gift = _service.PrepareGift(data.Name, data.Weight, data.Color, data.Material);
+                        gift.AddAttribute(RecommendedAge, attribute);
+                        gift.RecommendedAge()
+                            .Should()
+                            .Be(0);    
+                    })).QuickCheckThrowOnFailure();
+    }
+    
+    [Property]
+    public void FailsForATooHeavyGift()
+    {
+        var heavyWeights = Gen.Choose(51, 1000)
+            .Select(x => x / 10.0)
+            .ToArbitrary();
 
-            _service.PrepareGift(giftName, weight, color, material)
-                .Should()
-                .NotBeNull();
-        }
+        Prop.ForAll(
+                ArbitraryGiftDatas,
+                heavyWeights,
+                (data, weight) => {
+                        var prepareGift = () 
+                            => _service.PrepareGift(data.Name, weight, data.Color, data.Material);
 
-        [Fact]
-        public void RetrieveAttributeOnGift()
-        {
-            const string giftName = "Furby";
-            const double weight = 1;
-            const string color = "Multi";
-            const string material = "Cotton";
-
-            var gift = _service.PrepareGift(giftName, weight, color, material);
-            gift.AddAttribute(RecommendedAge, "3");
-
-            gift.RecommendedAge()
-                .Should()
-                .Be(3);
-        }
-
-        [Fact]
-        public void FailsForATooHeavyGift()
-        {
-            const string giftName = "Dog-E";
-            const double weight = 6;
-            const string color = "White";
-            const string material = "Metal";
-
-            var prepareGift = () => _service.PrepareGift(giftName, weight, color, material);
-
-            prepareGift.Should()
-                .Throw<ArgumentException>()
-                .WithMessage("Gift is too heavy for Santa's sleigh");
-        }
+                        prepareGift.Should()
+                            .Throw<ArgumentException>()
+                            .WithMessage("Gift is too heavy for Santa's sleigh");    
+                    })
+            .QuickCheckThrowOnFailure();
     }
 }
