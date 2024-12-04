@@ -2,7 +2,7 @@ namespace Routine.Tests;
 
 public class ReindeerFeederDouble : IReindeerFeeder
 {
-    public void FeedReindeers() => FeedReindeersWasCalled = true;
-    public bool FeedReindeersWasCalled { get; private set; }
-
+    private bool _assertFeedReindeersWasCalled;
+    public void FeedReindeers() => _assertFeedReindeersWasCalled = true;
+    public void ShouldHaveFedAllReindeers() =>  _assertFeedReindeersWasCalled.Should().BeTrue();
 }

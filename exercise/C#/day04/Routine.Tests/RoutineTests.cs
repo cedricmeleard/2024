@@ -1,8 +1,5 @@
 using FakeItEasy;
-using FluentAssertions;
-using Moq;
 using Xunit;
-using Times = Moq.Times;
 
 namespace Routine.Tests;
 
@@ -28,27 +25,7 @@ public class RoutineTests
         A.CallTo(() => reindeerFeeder.FeedReindeers()).MustHaveHappened();
         A.CallTo(() => emailService.ReadNewEmails()).MustHaveHappened();
     }
-        
-    [Fact]
-    public void StartRoutine_With_Moq()
-    {
-        // Arrange
-        var emailService = new Mock<IEmailService>();
-        var scheduleService = new Mock<IScheduleService>();
-        var reindeerFeeder = new Mock<IReindeerFeeder>();
-            
-        // Act
-        new Routine(emailService.Object, scheduleService.Object, reindeerFeeder.Object)
-            .Start();
-            
-        // Assert
-        scheduleService.Verify(x => x.TodaySchedule(), Times.Once);
-        scheduleService.Verify(x => x.OrganizeMyDay(It.IsAny<Schedule>()), Times.Once);
-        scheduleService.Verify(x => x.Continue(), Times.Once);
-        reindeerFeeder.Verify(x => x.FeedReindeers(), Times.Once);
-        emailService.Verify(x => x.ReadNewEmails(), Times.Once);
-    }
-
+     
     [Fact]
     public void StartRoutine_With_Manual_Test_Doubles()
     {
@@ -61,10 +38,10 @@ public class RoutineTests
         new Routine(emailService, scheduleService, reindeerFeeder)
             .Start();
 
-        scheduleService.TodayScheduleWasCalled.Should().BeTrue();
-        scheduleService.OrganizeMyDayWasCalledWithASchedule.Should().BeTrue();
-        scheduleService.ContinueWasCalled.Should().BeTrue();
-        reindeerFeeder.FeedReindeersWasCalled.Should().BeTrue();
-        emailService.ReadNewEmailsWasCalled.Should().BeTrue();
+        scheduleService.ShouldPrepareTodaySchedule();
+        scheduleService.ShouldHaveOrganizedMyDay();
+        reindeerFeeder.ShouldHaveFedAllReindeers();
+        emailService.ShouldEnsureNewEmailHasBeenRead();
+        scheduleService.SchedulingCanContinue();
     }
 }

@@ -2,9 +2,12 @@ namespace Routine.Tests;
 
 public class ScheduleServiceDouble : IScheduleService
 {
+    private bool _assertTodayScheduleWasCalled;
+    private Schedule? _schedule;
+    private bool _assertContinueWasCalled;
     public Schedule TodaySchedule()
     {
-        TodayScheduleWasCalled = true;
+        _assertTodayScheduleWasCalled = true;
         return new Schedule {
             Tasks = [
                 "Make sure Bryan got his present", 
@@ -12,9 +15,9 @@ public class ScheduleServiceDouble : IScheduleService
             ]
         };
     }
-    public void OrganizeMyDay(Schedule schedule) => OrganizeMyDayWasCalledWithASchedule = schedule?.Tasks.Count == 2;
-    public void Continue() => ContinueWasCalled = true;
-    public bool TodayScheduleWasCalled { get; private set; }
-    public bool OrganizeMyDayWasCalledWithASchedule { get; private set; }
-    public bool ContinueWasCalled { get; private set; }
+    public void OrganizeMyDay(Schedule schedule) => _schedule = schedule;
+    public void Continue() => _assertContinueWasCalled = true;
+    public void ShouldPrepareTodaySchedule() => _assertTodayScheduleWasCalled.Should().BeTrue();
+    public void ShouldHaveOrganizedMyDay() => (_schedule?.Tasks.Count == 2).Should().BeTrue();
+    public void SchedulingCanContinue() => _assertContinueWasCalled.Should().BeTrue();
 }
