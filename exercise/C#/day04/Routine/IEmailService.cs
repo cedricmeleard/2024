@@ -1,7 +1,6 @@
-namespace Routine
+namespace Routine;
+
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        void ReadNewEmails();
-    }
+    void ReadNewEmails();
 }
