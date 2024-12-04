@@ -1,5 +1,6 @@
+using FakeItEasy;
 using Moq;
-using VerifyXunit;
+using Times = Moq.Times;
 
 namespace Routine.Tests
 {
@@ -7,6 +8,27 @@ namespace Routine.Tests
     {
         [Fact]
         public void StartRoutine_With_FakeItEasy()
+        {
+            // Arrange
+            var emailService = A.Fake<IEmailService>();
+            var scheduleService = A.Fake<IScheduleService>();
+            var reindeerFeeder = A.Fake<IReindeerFeeder>();
+            
+            // Act
+            new Routine(emailService, scheduleService, reindeerFeeder)
+                .Start();
+            
+            // Assert
+            A.CallTo(() => scheduleService.TodaySchedule()).MustHaveHappened();
+            A.CallTo(() => scheduleService
+                .OrganizeMyDay(A<Schedule>.That.IsInstanceOf(typeof(Schedule)))).MustHaveHappened();
+            A.CallTo(() => scheduleService.Continue()).MustHaveHappened();
+            A.CallTo(() => reindeerFeeder.FeedReindeers()).MustHaveHappened();
+            A.CallTo(() => emailService.ReadNewEmails()).MustHaveHappened();
+        }
+        
+        [Fact]
+        public void StartRoutine_With_Moq()
         {
             // Arrange
             var emailService = new Mock<IEmailService>();
@@ -21,9 +43,7 @@ namespace Routine.Tests
             scheduleService.Verify(x => x.TodaySchedule(), Times.Once);
             scheduleService.Verify(x => x.OrganizeMyDay(It.IsAny<Schedule>()), Times.Once);
             scheduleService.Verify(x => x.Continue(), Times.Once);
-            
             reindeerFeeder.Verify(x => x.FeedReindeers(), Times.Once);
-            
             emailService.Verify(x => x.ReadNewEmails(), Times.Once);
         }
 
