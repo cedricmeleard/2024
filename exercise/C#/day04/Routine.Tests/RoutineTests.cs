@@ -4,71 +4,67 @@ using Moq;
 using Xunit;
 using Times = Moq.Times;
 
-namespace Routine.Tests
+namespace Routine.Tests;
+
+public class RoutineTests
 {
-    public class RoutineTests
+    [Fact]
+    public void StartRoutine_With_FakeItEasy()
     {
-        [Fact]
-        public void StartRoutine_With_FakeItEasy()
-        {
-            // Arrange
-            var emailService = A.Fake<IEmailService>();
-            var scheduleService = A.Fake<IScheduleService>();
-            var reindeerFeeder = A.Fake<IReindeerFeeder>();
+        // Arrange
+        var emailService = A.Fake<IEmailService>();
+        var scheduleService = A.Fake<IScheduleService>();
+        var reindeerFeeder = A.Fake<IReindeerFeeder>();
             
-            // Act
-            new Routine(emailService, scheduleService, reindeerFeeder)
-                .Start();
+        // Act
+        new Routine(emailService, scheduleService, reindeerFeeder)
+            .Start();
             
-            // Assert
-            A.CallTo(() => scheduleService.TodaySchedule()).MustHaveHappened();
-            A.CallTo(() => scheduleService
-                .OrganizeMyDay(A<Schedule>.That.IsInstanceOf(typeof(Schedule)))).MustHaveHappened();
-            A.CallTo(() => scheduleService.Continue()).MustHaveHappened();
-            A.CallTo(() => reindeerFeeder.FeedReindeers()).MustHaveHappened();
-            A.CallTo(() => emailService.ReadNewEmails()).MustHaveHappened();
-        }
+        // Assert
+        A.CallTo(() => scheduleService.TodaySchedule()).MustHaveHappened();
+        A.CallTo(() => scheduleService
+            .OrganizeMyDay(A<Schedule>.That.IsInstanceOf(typeof(Schedule)))).MustHaveHappened();
+        A.CallTo(() => scheduleService.Continue()).MustHaveHappened();
+        A.CallTo(() => reindeerFeeder.FeedReindeers()).MustHaveHappened();
+        A.CallTo(() => emailService.ReadNewEmails()).MustHaveHappened();
+    }
         
-        [Fact]
-        public void StartRoutine_With_Moq()
-        {
-            // Arrange
-            var emailService = new Mock<IEmailService>();
-            var scheduleService = new Mock<IScheduleService>();
-            var reindeerFeeder = new Mock<IReindeerFeeder>();
+    [Fact]
+    public void StartRoutine_With_Moq()
+    {
+        // Arrange
+        var emailService = new Mock<IEmailService>();
+        var scheduleService = new Mock<IScheduleService>();
+        var reindeerFeeder = new Mock<IReindeerFeeder>();
             
-            // Act
-            new Routine(emailService.Object, scheduleService.Object, reindeerFeeder.Object)
-                .Start();
+        // Act
+        new Routine(emailService.Object, scheduleService.Object, reindeerFeeder.Object)
+            .Start();
             
-            // Assert
-            scheduleService.Verify(x => x.TodaySchedule(), Times.Once);
-            scheduleService.Verify(x => x.OrganizeMyDay(It.IsAny<Schedule>()), Times.Once);
-            scheduleService.Verify(x => x.Continue(), Times.Once);
-            reindeerFeeder.Verify(x => x.FeedReindeers(), Times.Once);
-            emailService.Verify(x => x.ReadNewEmails(), Times.Once);
-        }
+        // Assert
+        scheduleService.Verify(x => x.TodaySchedule(), Times.Once);
+        scheduleService.Verify(x => x.OrganizeMyDay(It.IsAny<Schedule>()), Times.Once);
+        scheduleService.Verify(x => x.Continue(), Times.Once);
+        reindeerFeeder.Verify(x => x.FeedReindeers(), Times.Once);
+        emailService.Verify(x => x.ReadNewEmails(), Times.Once);
+    }
 
-        [Fact]
-        public void StartRoutine_With_Manual_Test_Doubles()
-        {
-            var writer = new StringWriter();
-            Console.SetOut(writer);
+    [Fact]
+    public void StartRoutine_With_Manual_Test_Doubles()
+    {
+        // Arrange
+        var emailService = new EmailServiceDouble();
+        var scheduleService = new ScheduleServiceDouble();
+        var reindeerFeeder = new ReindeerFeederDouble();
             
-            // Arrange
-            var emailService = new EmailServiceDouble();
-            var scheduleService = new ScheduleServiceDouble();
-            var reindeerFeeder = new ReindeerFeederDouble();
-            
-            // Act
-            new Routine(emailService, scheduleService, reindeerFeeder)
-                .Start();
+        // Act
+        new Routine(emailService, scheduleService, reindeerFeeder)
+            .Start();
 
-            scheduleService.TodayScheduleWasCalled.Should().BeTrue();
-            scheduleService.OrganizeMyDayWasCalledWithASchedule.Should().BeTrue();
-            scheduleService.ContinueWasCalled.Should().BeTrue();
-            reindeerFeeder.FeedReindeersWasCalled.Should().BeTrue();
-            emailService.ReadNewEmailsWasCalled.Should().BeTrue();
-        }
+        scheduleService.TodayScheduleWasCalled.Should().BeTrue();
+        scheduleService.OrganizeMyDayWasCalledWithASchedule.Should().BeTrue();
+        scheduleService.ContinueWasCalled.Should().BeTrue();
+        reindeerFeeder.FeedReindeersWasCalled.Should().BeTrue();
+        emailService.ReadNewEmailsWasCalled.Should().BeTrue();
     }
 }
