@@ -2,8 +2,6 @@ namespace Routine.Tests;
 
 public class EmailServiceDouble : IEmailService
 {
-    public void ReadNewEmails()
-    {
-        Console.WriteLine("IEmailService : Reading newEmails");
-    }
+    public void ReadNewEmails() => ReadNewEmailsWasCalled = true;
+    public bool ReadNewEmailsWasCalled { get; set; }
 }

@@ -1,5 +1,7 @@
 using FakeItEasy;
+using FluentAssertions;
 using Moq;
+using Xunit;
 using Times = Moq.Times;
 
 namespace Routine.Tests
@@ -48,7 +50,7 @@ namespace Routine.Tests
         }
 
         [Fact]
-        public async Task StartRoutine_With_Manual_Test_Doubles()
+        public void StartRoutine_With_Manual_Test_Doubles()
         {
             var writer = new StringWriter();
             Console.SetOut(writer);
@@ -62,7 +64,11 @@ namespace Routine.Tests
             new Routine(emailService, scheduleService, reindeerFeeder)
                 .Start();
 
-            await Verify(writer.ToString());
+            scheduleService.TodayScheduleWasCalled.Should().BeTrue();
+            scheduleService.OrganizeMyDayWasCalledWithASchedule.Should().BeTrue();
+            scheduleService.ContinueWasCalled.Should().BeTrue();
+            reindeerFeeder.FeedReindeersWasCalled.Should().BeTrue();
+            emailService.ReadNewEmailsWasCalled.Should().BeTrue();
         }
     }
 }
