@@ -30,11 +30,12 @@ Here are the requirements:
 - [X] an EID can't be white space
 - [X] An EID must be 8 digit characters long
 - [X] First char is an int between 1 and 3
-- [ ] Second and third chars are an int representation between 00 and 99
+- [X] Second and third chars are an int representation between 00 and 99
 - [X] Fifth to Sixth chars are an int representation between 001 and 999
-- [ ] Seventh and Height chars are an int representation between 01 and 97
-- [ ] Control must be rest mod 97
-- [ ] an EID should Be unique
+- [X] Seventh and Height chars are an int representation between 01 and 97
+- [X] Control must be rest mod 97
+ 
+Removed, outofscope [O] an EID should Be unique
 
 ## Kata
 
@@ -69,4 +70,6 @@ public void Not_Be_Valid(string? eid, string because)
 sex wasn't well recognized,  
 my test 10000164 is actually valid at this time  
 I'm terrible at regex
-8. 
+8. Continue with Control must be rest mod 97, test passed  
+but adding Jerceval show it's not valid (it's my validation part that broke - thanks the use of monad, it's really easy to copy/paste on invalid part to see what's going wrong)
+9. 

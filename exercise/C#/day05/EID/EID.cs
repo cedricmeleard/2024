@@ -28,6 +28,12 @@ public class EID
             return Error.New("SN can't be 000");
         }
         
+        var basenumber =int.Parse( eid.Substring(0, 6));
+        var validationNumber = int.Parse(eid.Substring(6, 2));
+        if((97 - basenumber % 97) != validationNumber) {
+            return Error.New($"Validation isn't correct");
+        }
+        
         return eid;
     }
 }
