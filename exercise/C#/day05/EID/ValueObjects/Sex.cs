@@ -1,4 +1,4 @@
-namespace EID;
+namespace EID.ValueObjects;
 
 public enum Sex
 {

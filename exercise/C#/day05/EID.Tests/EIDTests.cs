@@ -1,3 +1,4 @@
+using EID.ValueObjects;
 using FluentAssertions;
 using Xunit;
 
