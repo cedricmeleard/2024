@@ -24,14 +24,46 @@ Here are the requirements:
 
 ## Building Test list
 
-- [] an EID can't be null
-- [] an EID can't be empty
-- [] An EID must be 8 characters long
-- [] an EID can't be white space
-- [] An EID must be 8 digit characters long
-- [] First char is an int between 1 and 3
-- [] Second and third chars are an int representation between 00 and 99
-- [] Fifth to Sixth chars are an int representation between 001 and 999
-- [] Seventh and Height chars are an int representation between 01 and 97
-- [] Control must be rest mod 97
-- [] an EID should Be unique
+- [X] an EID can't be null
+- [X] an EID can't be empty
+- [X] An EID must be 8 characters long
+- [X] an EID can't be white space
+- [X] An EID must be 8 digit characters long
+- [X] First char is an int between 1 and 3
+- [ ] Second and third chars are an int representation between 00 and 99
+- [X] Fifth to Sixth chars are an int representation between 001 and 999
+- [ ] Seventh and Height chars are an int representation between 01 and 97
+- [ ] Control must be rest mod 97
+- [ ] an EID should Be unique
+
+## Kata
+
+1. First go with implementation of test list one by one
+
+- [X] an EID can't be null
+- [X] an EID can't be empty
+- [X] An EID must be 8 characters long
+- [X] an EID can't be white space
+- [X] An EID must be 8 digit characters long
+- [X] First char is an int between 1 and 3
+
+Using Theory for each test, 
+and adding why it's a error in test, so that it s easy to know what I'm testing
+
+
+2. Then I found a test I don't how to check, already covered by other
+- Second and third chars are an int representation between 00 and 99
+
+3. I Decided to create 2 test with a valid EID  
+my objective was to have a test that stay green all the time
+4. As I moved forward it became hard to really know why my test are failing
+5. I decided to move to a monadic  
+but I not familiar with yet, my method `bool IsValid(string ied)` became a `Either<Error, string> Parse(string? ied)` get my test green
+6. Continue with SN, Test for Error are green, but valid are not  
+ I'm adding 2 theory
+```csharp
+[InlineData("30000177", "should fail")]
+[InlineData("12345672", "should fail")]
+//fails with "SN can't be 000" 
+```
+I've missed something :) (I'll commit here)
