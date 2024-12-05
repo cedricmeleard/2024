@@ -3,7 +3,7 @@ using Xunit;
 
 namespace EID.Tests
 {
-    public class EID_Should
+    public class EidShould
     {
         [Theory]
         [InlineData(null, "it is null or whitespace")]
@@ -17,13 +17,13 @@ namespace EID.Tests
         [InlineData("12345670", "Validation isn't correct")]
         public void Not_Be_Valid(string? eid, string because)
         {
-            var notAnEid = EID.Parse(eid);
-            
-            notAnEid.IsLeft.Should().BeTrue();
-            notAnEid.IfLeft(x => x.Message.Should().Be(because));
+            var notAnEid = Eid.Parse(eid);
+
+            notAnEid.IsRight.Should().BeTrue();
+            notAnEid.IfRight(x => x.Message.Should().Be(because));
 
         }
-        
+
         [Theory]
         [InlineData("12345625")]
         [InlineData("30000120")]
@@ -34,10 +34,20 @@ namespace EID.Tests
         [InlineData("11111151")]
         public void Be_Valid(string? eid)
         {
-            var aValidEid = EID.Parse(eid);
-            
-            aValidEid.IsRight.Should().BeTrue();
-            aValidEid.IfRight(x => x.Should().Be(eid));
+            var aValidEid = Eid.Parse(eid);
+
+            aValidEid.IsLeft.Should().BeTrue();
+            aValidEid.IfLeft(x => x.ToString().Should().Be(eid));
         }
+
+        [Fact]
+        public void Parse_Jerceval_Correctly()
+            => Eid.Parse("19800767")
+                .IfLeft(eid =>
+                {
+                    eid.Sex.Should().Be(Sex.Sloubi);
+                    eid.BirthYear.Value.Should().Be(98);
+                    eid.SerialNumber.Value.Should().Be("007");
+                });
     }
 }

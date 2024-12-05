@@ -72,4 +72,7 @@ my test 10000164 is actually valid at this time
 I'm terrible at regex
 8. Continue with Control must be rest mod 97, test passed  
 but adding Jerceval show it's not valid (it's my validation part that broke - thanks the use of monad, it's really easy to copy/paste on invalid part to see what's going wrong)
-9. 
+9. Correct test, actually I did not read well enough the verification, it was mod from 97...
+10. Start refactoring my mess...I choose to keep resolve test one by one and make them pass before refactoring,   
+did not, still I don't see clearly yet where I'm going to, I prefer to keep it as it since it a simple (yet not so simple) code
+11. Still not happy with conditionals, I'll take a look later
