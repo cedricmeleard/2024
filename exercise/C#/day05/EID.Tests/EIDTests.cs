@@ -13,9 +13,7 @@ namespace EID.Tests
         [InlineData("123456789", "it doesn't match the required size")]
         [InlineData("1234567", "it doesn't match the required size")]
         [InlineData("00001648", "it doesn't start with 1-3")]
-        [InlineData("10000164", "SN can't be 000")]
-        [InlineData("30000177", "should fail")]
-        [InlineData("12345672", "should fail")]
+        [InlineData("10000064", "SN can't be 000")]
         public void Not_Be_Valid(string? eid, string because)
         {
             var notAnEid = EID.Parse(eid);

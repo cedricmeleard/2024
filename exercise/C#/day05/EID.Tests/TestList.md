@@ -51,19 +51,22 @@ Using Theory for each test,
 and adding why it's a error in test, so that it s easy to know what I'm testing
 
 
-2. Then I found a test I don't how to check, already covered by other
-- Second and third chars are an int representation between 00 and 99
+2. Then I found a test I don't how to check, already covered by others: Second and third chars are an int representation between 00 and 99
 
-3. I Decided to create 2 test with a valid EID  
-my objective was to have a test that stay green all the time
+3. I Decided to create 2 test with a valid EID, my objective was to have a test that stay green all the time
 4. As I moved forward it became hard to really know why my test are failing
 5. I decided to move to a monadic  
 but I not familiar with yet, my method `bool IsValid(string ied)` became a `Either<Error, string> Parse(string? ied)` get my test green
 6. Continue with SN, Test for Error are green, but valid are not  
- I'm adding 2 theory
+ I'm adding 2 theory I've missed something :) (I'll commit here)
 ```csharp
-[InlineData("30000177", "should fail")]
-[InlineData("12345672", "should fail")]
-//fails with "SN can't be 000" 
+[InlineData("10000164", "SN can't be 000")]
+[InlineData("30000177", "should fail")]//fails with "SN can't be 000" 
+[InlineData("12345672", "should fail")]//fails with "SN can't be 000" 
+public void Not_Be_Valid(string? eid, string because)
 ```
-I've missed something :) (I'll commit here)
+7. Found 3 problems thanks to the use of monad and Error,  
+sex wasn't well recognized,  
+my test 10000164 is actually valid at this time  
+I'm terrible at regex
+8. 
