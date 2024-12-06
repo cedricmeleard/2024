@@ -1,7 +1,6 @@
-namespace Routine
+namespace Routine;
+
+public interface IReindeerFeeder
 {
-    public interface IReindeerFeeder
-    {
-        void FeedReindeers();
-    }
+    void FeedReindeers();
 }

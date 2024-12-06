@@ -1,7 +1,6 @@
-namespace Routine
+namespace Routine;
+
+public class Schedule
 {
-    public class Schedule
-    {
-        public List<string> Tasks { get; set; } = [];
-    }
+    public List<string> Tasks { get; set; } = [];
 }

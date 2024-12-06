@@ -24,4 +24,14 @@
         <ProjectReference Include="..\Routine\Routine.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Doubles\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="RoutineTests.StartRoutine_With_Manual_Test_Doubles.verified.txt">
+        <DependentUpon>RoutineTests.cs</DependentUpon>
+      </None>
+    </ItemGroup>
+
 </Project>

@@ -1,9 +1,8 @@
-namespace Routine
+namespace Routine;
+
+public interface IScheduleService
 {
-    public interface IScheduleService
-    {
-        Schedule TodaySchedule();
-        void OrganizeMyDay(Schedule schedule);
-        void Continue();
-    }
+    Schedule TodaySchedule();
+    void OrganizeMyDay(Schedule schedule);
+    void Continue();
 }

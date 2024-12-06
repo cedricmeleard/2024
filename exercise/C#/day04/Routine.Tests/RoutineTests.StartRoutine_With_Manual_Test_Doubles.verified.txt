@@ -1,0 +1,6 @@
+﻿IScheduleService : TodaySchedule:
+IScheduleService : OrganizeMyDay with Schedule :
+ Make sure Bryan got his present,Verify Donald matches conditions required for a present
+IReindeerFeeder : FeedReindeers
+IEmailService : Reading newEmails
+IScheduleService : Continue
