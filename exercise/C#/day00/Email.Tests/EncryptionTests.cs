@@ -2,14 +2,13 @@ using System.Security.Cryptography;
 using System.Text;
 using FluentAssertions;
 using FsCheck;
-using Xunit;
 
 namespace Email.Tests;
 
 public class EncryptionTests
 {
     private readonly Encryption _encryption = new(
-        new Configuration(Key: ConvertKey("Advent Of Craft"), Iv: ConvertIv("2024"))
+        new Configuration(ConvertKey("Advent Of Craft"), ConvertIv("2024"))
     );
 
     [Fact]
@@ -18,6 +17,12 @@ public class EncryptionTests
             .Encrypt("Unlock Your Potential with the Advent Of Craft Calendar!")
             .Should()
             .Be("L7wht/YddOoTvYvrc+wFcZhtXNvZ2cHFxq9ND27h1Ovv/aWLxN8lWv1xMsguM/R4Yodk3rn9cppI+YarggtPjA==");
+
+    [Fact]
+    public async Task Decrypt_A_String()
+        => await Verify(_encryption
+            .Decrypt(FileUtils.LoadFile("EncryptedEmail.txt")));
+
 
     [Fact]
     public void EncryptDecrypt_ShouldReturnOriginalString()
