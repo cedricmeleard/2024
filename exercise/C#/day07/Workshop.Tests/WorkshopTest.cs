@@ -1,30 +1,22 @@
 using Xunit;
 
-namespace Workshop.Tests
+namespace Workshop.Tests;
+
+public class WorkshopTest
 {
-    public class WorkshopTest
-    {
-        private const string ToyName = "1 Super Nintendo";
+    private const string ToyName = "1 Super Nintendo";
 
-        [Fact]
-        public void CompletingAGiftShouldSetItsStatusToProduced()
-        {
-            var workshop = new Workshop();
-            workshop.AddGift(new Gift(ToyName));
+    [Fact]
+    public void CompletingAGiftShouldSetItsStatusToProduced() 
+        => SetupAWorkshop.NewOne()
+            .WithAGiftNamed(ToyName)
+            .WhenActingOnAGiftWith(workshop => workshop.CompleteGift(ToyName))
+            .ItShouldVerifyThat(completedGift 
+                => completedGift.DoesExist().And().IsProduced());
 
-            var completedGift = workshop.CompleteGift(ToyName);
-
-            Assert.NotNull(completedGift);
-            Assert.Equal(Status.Produced, completedGift.Status);
-        }
-
-        [Fact]
-        public void CompletingANonExistingGiftShouldReturnNull()
-        {
-            var workshop = new Workshop();
-            var completedGift = workshop.CompleteGift("NonExistingToy");
-
-            Assert.Null(completedGift);
-        }
-    }
+    [Fact]
+    public void CompletingANonExistingGiftShouldReturnNull()
+        => SetupAWorkshop.NewOne()
+            .WhenActingOnAGiftWith(workshop => workshop.CompleteGift("NonExistingToy"))
+            .ItShouldVerifyThat(completedGift => completedGift.DoesNotExists());
 }
