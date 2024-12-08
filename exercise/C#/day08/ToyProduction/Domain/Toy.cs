@@ -1,15 +1,29 @@
-namespace ToyProduction.Domain
+using LanguageExt;
+using LanguageExt.Common;
+
+namespace ToyProduction.Domain;
+
+public class Toy(string name, State state)
 {
-    public class Toy(string name, State state)
+    private State _state = state;
+    public string Name { get; } = name;
+    public Either<Toy, Error> StartProduction()
     {
-        public string Name { get; } = name;
-        public State State { get; set; } = state;
+        if (IsNotUnassigned) {
+            return Error.New($"Toy {Name} is not unassigned");
+        }
+        
+        _state = State.InProduction;
+        return this;
     }
 
-    public enum State
-    {
-        Unassigned,
-        InProduction,
-        Completed
-    }
+    private bool IsNotUnassigned => this is not { _state: State.Unassigned };
+    public bool IsInProduction => this is { _state: State.InProduction };
+}
+
+public enum State
+{
+    Unassigned,
+    InProduction,
+    Completed
 }
