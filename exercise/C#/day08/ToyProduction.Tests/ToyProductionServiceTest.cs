@@ -14,6 +14,7 @@ public class ToyProductionServiceTest
     public void AssignToyToElfShouldPassTheItemInProduction()
     {
         var repository = new InMemoryToyRepository();
+        
         var service = new ToyProductionService(repository);
         repository.Save(new Toy(ToyName, State.Unassigned));
 
