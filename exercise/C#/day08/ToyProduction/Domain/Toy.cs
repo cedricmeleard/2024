@@ -4,7 +4,7 @@ public class Toy(string name, State state)
 {
     private State _state = state;
     public string Name { get; } = name;
-    public void ToProduction(IToyRepository repository)
+    public void StartProduction(IToyRepository repository)
     {
         if (IsNotUnassigned) {
             return;
