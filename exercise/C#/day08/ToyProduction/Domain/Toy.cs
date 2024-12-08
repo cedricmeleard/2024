@@ -1,17 +1,20 @@
+using LanguageExt;
+using LanguageExt.Common;
+
 namespace ToyProduction.Domain;
 
 public class Toy(string name, State state)
 {
     private State _state = state;
     public string Name { get; } = name;
-    public void StartProduction(IToyRepository repository)
+    public Either<Toy, Error> StartProduction()
     {
         if (IsNotUnassigned) {
-            return;
+            return Error.New($"Toy {Name} is not unassigned");
         }
         
         _state = State.InProduction;
-        repository.Save(this);
+        return this;
     }
 
     private bool IsNotUnassigned => this is not { _state: State.Unassigned };
