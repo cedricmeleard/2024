@@ -21,8 +21,8 @@ public class ToyProductionServiceTest
         service.AssignToyToElf(ToyName);
 
         repository.FindByName(ToyName)!
-            .State
+            .IsInProduction
             .Should()
-            .Be(State.InProduction);
+            .BeTrue();
     }
 }
