@@ -1,8 +1,7 @@
-namespace GiftWish
+namespace GiftWish;
+
+public enum Behavior
 {
-    public enum Behavior
-    {
-        Naughty,
-        Nice
-    }
+    Naughty,
+    Nice
 }
