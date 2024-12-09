@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentAssertions.Primitives;
 using Xunit;
 
 namespace GiftWish.Tests;
@@ -10,37 +11,46 @@ public class SantaServiceTests
     [Fact]
     public void RequestIsApprovedForNiceChildWithFeasibleGift()
     {
-        var niceChild = ChildBuilder
-            .CreateANiceChildNamed("Alice", "Thomas")
+        var requestOfANiceChild = ChildBuilder
+            .WithANiceChildNamed("Alice", "Thomas")
             .WithTheAgeOf(9)
-            .WithAGiftRequest(GiftRequestBuilder.CreateANiceToHaveGift("Bicycle"))
+            .WhoDreamOf("Bicycle")
             .Build();
         
-        _service.EvaluateRequest(niceChild).Should().BeTrue();
+        _service.EvaluateRequest(requestOfANiceChild).ShouldBeApproved();
     }
 
     [Fact]
     public void RequestIsDeniedForNaughtyChild()
     {
-        var naughtyChild = ChildBuilder
-            .CreateANaughtyChildNamed("Noa", "Thierry")
+        var requestOfNaughtyChild = ChildBuilder
+            .WithANaughtyChildNamed("Noa", "Thierry")
             .WithTheAgeOf(6)
-            .WithAGiftRequest(GiftRequestBuilder.CreateADreamGift("SomeToy"))
+            .WhoLikeToHave("SomeToy")
             .Build();
         
-        _service.EvaluateRequest(naughtyChild).Should().BeFalse();
+        _service.EvaluateRequest(requestOfNaughtyChild).ShouldBeDenied();
     }
 
     [Fact]
     public void RequestIsDeniedForNiceChildWithInfeasibleGift()
     {
-        var niceChildWithInfeasibleGift = ChildBuilder
-            .CreateANiceChildNamed("Charlie", "Joie")
+        var infeasibleGift = ChildBuilder
+            .WithANiceChildNamed("Charlie", "Joie")
             .WithTheAgeOf(3)
-            .WithAGiftRequest(
-                GiftRequestBuilder.CreateADreamGift("AnotherToy").ThatIsNotFeasible())
+            .WhoDreamOf("AnotherToy").ThatIsNotFeasible()
             .Build();
         
-        _service.EvaluateRequest(niceChildWithInfeasibleGift).Should().BeFalse();
+        _service.EvaluateRequest(infeasibleGift).ShouldBeDenied();
     }
 }
+
+public static class TestExtensions
+{
+    public static void ShouldBeDenied(this bool result) 
+        => result.Should().BeFalse();
+
+    public static void ShouldBeApproved(this bool result) 
+        => result.Should().BeTrue();
+}
+    

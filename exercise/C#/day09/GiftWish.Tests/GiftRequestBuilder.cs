@@ -12,20 +12,13 @@ public class GiftRequestBuilder
         _priority = niceToHave;
     }
 
-    public GiftRequestBuilder ThatIsNotFeasible()
-    {
-        _isFeasible = false;
-        return this;
-    }
-
-    public static GiftRequestBuilder CreateADreamGift(string name)
-        => new GiftRequestBuilder(name, Priority.Dream);
+    public static GiftRequestBuilder CreateADreamGift(string name) 
+        => new(name, Priority.Dream);
     
-    public static GiftRequestBuilder CreateANiceToHaveGift(string name)
-        => new GiftRequestBuilder(name, Priority.NiceToHave);
-
-    public GiftRequest Build()
-    { 
-        return new GiftRequest(_name, _isFeasible, _priority);
-    }
+    public static GiftRequestBuilder CreateANiceToHaveGift(string name) 
+        => new(name, Priority.NiceToHave);
+    
+    public void ThatIsNotFeasible() => _isFeasible = false;
+    
+    public GiftRequest Build() => new(_name, _isFeasible, _priority);
 }

@@ -15,10 +15,10 @@ public class ChildBuilder
         _behavior = behavior;
     }
 
-    public static ChildBuilder CreateANiceChildNamed(string firstName, string lastName) 
+    public static ChildBuilder WithANiceChildNamed(string firstName, string lastName) 
         => new(firstName, lastName, Behavior.Nice);
     
-    public static ChildBuilder CreateANaughtyChildNamed(string firstName, string lastName) 
+    public static ChildBuilder WithANaughtyChildNamed(string firstName, string lastName) 
         => new(firstName, lastName, Behavior.Naughty);
 
     
@@ -28,9 +28,15 @@ public class ChildBuilder
         return this;
     }
 
-    public ChildBuilder WithAGiftRequest(GiftRequestBuilder giftRequest)
+    public ChildBuilder WhoLikeToHave(string name)
     {
-        _giftRequest = giftRequest;
+        _giftRequest = GiftRequestBuilder.CreateANiceToHaveGift(name);
+        return this;
+    }
+    
+    public ChildBuilder WhoDreamOf(string name)
+    {
+        _giftRequest = GiftRequestBuilder.CreateADreamGift(name);
         return this;
     }
     
@@ -40,4 +46,10 @@ public class ChildBuilder
         _age, 
         _behavior, 
         _giftRequest.Build());
+
+    public ChildBuilder ThatIsNotFeasible()
+    {
+        _giftRequest?.ThatIsNotFeasible();
+        return this;
+    }
 }
