@@ -1,31 +1,46 @@
 using FluentAssertions;
 using Xunit;
 
-namespace GiftWish.Tests
+namespace GiftWish.Tests;
+
+public class SantaServiceTests
 {
-    public class SantaServiceTests
+    private readonly SantaService _service = new();
+
+    [Fact]
+    public void RequestIsApprovedForNiceChildWithFeasibleGift()
     {
-        private readonly SantaService _service = new();
+        var niceChild = ChildBuilder
+            .CreateANiceChildNamed("Alice", "Thomas")
+            .WithTheAgeOf(9)
+            .WithAGiftRequest(GiftRequestBuilder.CreateANiceToHaveGift("Bicycle"))
+            .Build();
+        
+        _service.EvaluateRequest(niceChild).Should().BeTrue();
+    }
 
-        [Fact]
-        public void RequestIsApprovedForNiceChildWithFeasibleGift()
-        {
-            var niceChild = new Child("Alice", "Thomas", 9, Behavior.Nice, new GiftRequest("Bicycle", true, Priority.NiceToHave));
-            _service.EvaluateRequest(niceChild).Should().BeTrue();
-        }
+    [Fact]
+    public void RequestIsDeniedForNaughtyChild()
+    {
+        var naughtyChild = ChildBuilder
+            .CreateANaughtyChildNamed("Noa", "Thierry")
+            .WithTheAgeOf(6)
+            .WithAGiftRequest(GiftRequestBuilder.CreateADreamGift("SomeToy"))
+            .Build();
+        
+        _service.EvaluateRequest(naughtyChild).Should().BeFalse();
+    }
 
-        [Fact]
-        public void RequestIsDeniedForNaughtyChild()
-        {
-            var naughtyChild = new Child("Noa", "Thierry", 6, Behavior.Naughty, new GiftRequest("SomeToy", true, Priority.Dream));
-            _service.EvaluateRequest(naughtyChild).Should().BeFalse();
-        }
-
-        [Fact]
-        public void RequestIsDeniedForNiceChildWithInfeasibleGift()
-        {
-            var niceChildWithInfeasibleGift = new Child("Charlie", "Joie", 3, Behavior.Nice, new GiftRequest("AnotherToy", false, Priority.Dream));
-            _service.EvaluateRequest(niceChildWithInfeasibleGift).Should().BeFalse();
-        }
+    [Fact]
+    public void RequestIsDeniedForNiceChildWithInfeasibleGift()
+    {
+        var niceChildWithInfeasibleGift = ChildBuilder
+            .CreateANiceChildNamed("Charlie", "Joie")
+            .WithTheAgeOf(3)
+            .WithAGiftRequest(
+                GiftRequestBuilder.CreateADreamGift("AnotherToy").ThatIsNotFeasible())
+            .Build();
+        
+        _service.EvaluateRequest(niceChildWithInfeasibleGift).Should().BeFalse();
     }
 }
