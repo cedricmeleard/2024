@@ -1,42 +1,41 @@
-﻿namespace GiftWish.Tests;
+﻿using Bogus;
+
+namespace GiftWish.Tests;
 
 public class ChildBuilder
 {
+    private const int AgeWhereStillAChild = 77;
     private readonly string _firstName;
     private readonly string _lastName;
     private int _age;
     private readonly Behavior _behavior;
     private GiftRequestBuilder _giftRequest;
 
-    private ChildBuilder(string firstName, string lastName, Behavior behavior)
+    private ChildBuilder(Behavior behavior)
     {
-        _firstName = firstName;
-        _lastName = lastName;
+        _firstName = new Faker().Name.FirstName();
+        _lastName = new Faker().Name.LastName();
         _behavior = behavior;
+        
+        _age = new Faker().Random.Int(1, AgeWhereStillAChild);
     }
 
-    public static ChildBuilder WithANiceChildNamed(string firstName, string lastName) 
-        => new(firstName, lastName, Behavior.Nice);
+    public static ChildBuilder WithANiceChildNamed() 
+        => new(Behavior.Nice);
     
-    public static ChildBuilder WithANaughtyChildNamed(string firstName, string lastName) 
-        => new(firstName, lastName, Behavior.Naughty);
+    public static ChildBuilder WithANaughtyChildNamed() 
+        => new(Behavior.Naughty);
 
     
-    public ChildBuilder WithTheAgeOf(int age)
+    public ChildBuilder WithAGiftHeLikeToHave()
     {
-        _age = age;
-        return this;
-    }
-
-    public ChildBuilder WhoLikeToHave(string name)
-    {
-        _giftRequest = GiftRequestBuilder.CreateANiceToHaveGift(name);
+        _giftRequest = GiftRequestBuilder.CreateANiceToHaveGift();
         return this;
     }
     
-    public ChildBuilder WhoDreamOf(string name)
+    public ChildBuilder WithAGiftHeDreamAbout()
     {
-        _giftRequest = GiftRequestBuilder.CreateADreamGift(name);
+        _giftRequest = GiftRequestBuilder.CreateADreamGift();
         return this;
     }
     

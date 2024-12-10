@@ -1,4 +1,6 @@
-﻿namespace GiftWish.Tests;
+﻿using Bogus;
+
+namespace GiftWish.Tests;
 
 public class GiftRequestBuilder
 {
@@ -6,17 +8,17 @@ public class GiftRequestBuilder
     private readonly string _name;
     private readonly Priority _priority;
 
-    private GiftRequestBuilder(string name, Priority niceToHave)
+    private GiftRequestBuilder(Priority niceToHave)
     {
-        _name = name;
+        _name = new Faker().Commerce.ProductName();
         _priority = niceToHave;
     }
 
-    public static GiftRequestBuilder CreateADreamGift(string name) 
-        => new(name, Priority.Dream);
+    public static GiftRequestBuilder CreateADreamGift() 
+        => new(Priority.Dream);
     
-    public static GiftRequestBuilder CreateANiceToHaveGift(string name) 
-        => new(name, Priority.NiceToHave);
+    public static GiftRequestBuilder CreateANiceToHaveGift() 
+        => new(Priority.NiceToHave);
     
     public void ThatIsNotFeasible() => _isFeasible = false;
     

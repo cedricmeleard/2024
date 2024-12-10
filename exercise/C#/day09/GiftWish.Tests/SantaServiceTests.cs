@@ -12,9 +12,8 @@ public class SantaServiceTests
     public void RequestIsApprovedForNiceChildWithFeasibleGift()
     {
         var requestOfANiceChild = ChildBuilder
-            .WithANiceChildNamed("Alice", "Thomas")
-            .WithTheAgeOf(9)
-            .WhoDreamOf("Bicycle")
+            .WithANiceChildNamed()
+            .WithAGiftHeDreamAbout()
             .Build();
         
         _service.EvaluateRequest(requestOfANiceChild).ShouldBeApproved();
@@ -24,9 +23,8 @@ public class SantaServiceTests
     public void RequestIsDeniedForNaughtyChild()
     {
         var requestOfNaughtyChild = ChildBuilder
-            .WithANaughtyChildNamed("Noa", "Thierry")
-            .WithTheAgeOf(6)
-            .WhoLikeToHave("SomeToy")
+            .WithANaughtyChildNamed()
+            .WithAGiftHeLikeToHave()
             .Build();
         
         _service.EvaluateRequest(requestOfNaughtyChild).ShouldBeDenied();
@@ -36,9 +34,8 @@ public class SantaServiceTests
     public void RequestIsDeniedForNiceChildWithInfeasibleGift()
     {
         var infeasibleGift = ChildBuilder
-            .WithANiceChildNamed("Charlie", "Joie")
-            .WithTheAgeOf(3)
-            .WhoDreamOf("AnotherToy").ThatIsNotFeasible()
+            .WithANiceChildNamed()
+            .WithAGiftHeDreamAbout().ThatIsNotFeasible()
             .Build();
         
         _service.EvaluateRequest(infeasibleGift).ShouldBeDenied();
