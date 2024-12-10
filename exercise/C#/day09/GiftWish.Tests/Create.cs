@@ -2,7 +2,7 @@
 
 namespace GiftWish.Tests;
 
-public class ChildBuilder
+public class Create
 {
     private const int AgeWhereStillAChild = 77;
     private readonly string _firstName;
@@ -11,7 +11,7 @@ public class ChildBuilder
     private readonly Behavior _behavior;
     private GiftRequestBuilder _giftRequest;
 
-    private ChildBuilder(Behavior behavior)
+    private Create(Behavior behavior)
     {
         _firstName = new Faker().Name.FirstName();
         _lastName = new Faker().Name.LastName();
@@ -20,20 +20,20 @@ public class ChildBuilder
         _age = new Faker().Random.Int(1, AgeWhereStillAChild);
     }
 
-    public static ChildBuilder WithANiceChildNamed() 
+    public static Create ANiceChild() 
         => new(Behavior.Nice);
     
-    public static ChildBuilder WithANaughtyChildNamed() 
+    public static Create ANaughtyChild() 
         => new(Behavior.Naughty);
 
     
-    public ChildBuilder WithAGiftHeLikeToHave()
+    public Create WhoLikeToHaveAGift()
     {
         _giftRequest = GiftRequestBuilder.CreateANiceToHaveGift();
         return this;
     }
     
-    public ChildBuilder WithAGiftHeDreamAbout()
+    public Create WhoDreamsOfAGift()
     {
         _giftRequest = GiftRequestBuilder.CreateADreamGift();
         return this;
@@ -46,7 +46,7 @@ public class ChildBuilder
         _behavior, 
         _giftRequest.Build());
 
-    public ChildBuilder ThatIsNotFeasible()
+    public Create ThatIsNotFeasible()
     {
         _giftRequest?.ThatIsNotFeasible();
         return this;

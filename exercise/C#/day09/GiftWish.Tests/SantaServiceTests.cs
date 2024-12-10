@@ -1,7 +1,3 @@
-using FluentAssertions;
-using FluentAssertions.Primitives;
-using Xunit;
-
 namespace GiftWish.Tests;
 
 public class SantaServiceTests
@@ -11,9 +7,9 @@ public class SantaServiceTests
     [Fact]
     public void RequestIsApprovedForNiceChildWithFeasibleGift()
     {
-        var requestOfANiceChild = ChildBuilder
-            .WithANiceChildNamed()
-            .WithAGiftHeDreamAbout()
+        var requestOfANiceChild = Create
+            .ANiceChild()
+            .WhoDreamsOfAGift()
             .Build();
         
         _service.EvaluateRequest(requestOfANiceChild).ShouldBeApproved();
@@ -22,9 +18,9 @@ public class SantaServiceTests
     [Fact]
     public void RequestIsDeniedForNaughtyChild()
     {
-        var requestOfNaughtyChild = ChildBuilder
-            .WithANaughtyChildNamed()
-            .WithAGiftHeLikeToHave()
+        var requestOfNaughtyChild = Create
+            .ANaughtyChild()
+            .WhoLikeToHaveAGift()
             .Build();
         
         _service.EvaluateRequest(requestOfNaughtyChild).ShouldBeDenied();
@@ -33,9 +29,9 @@ public class SantaServiceTests
     [Fact]
     public void RequestIsDeniedForNiceChildWithInfeasibleGift()
     {
-        var infeasibleGift = ChildBuilder
-            .WithANiceChildNamed()
-            .WithAGiftHeDreamAbout().ThatIsNotFeasible()
+        var infeasibleGift = Create
+            .ANiceChild()
+            .WhoDreamsOfAGift().ThatIsNotFeasible()
             .Build();
         
         _service.EvaluateRequest(infeasibleGift).ShouldBeDenied();
