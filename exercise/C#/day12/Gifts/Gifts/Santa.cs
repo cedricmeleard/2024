@@ -6,14 +6,10 @@ namespace Gifts;
 public class Santa(IChildrenRepository childrenRepository)
 {
     public Toy? ChooseToyForChild(string childName)
-    {
-        var found = childrenRepository.FindChild(childName);
-
-        if (found == null)
-            throw new InvalidOperationException("No such child found");
-
-        return found.ChooseToy();
-    }
+        => childrenRepository
+               .FindChild(childName)?
+               .ChooseToy()
+           ?? throw new InvalidOperationException("No such child found");
 
     public void AddChild(Child child) =>
         // Actual implementation implies unique child names

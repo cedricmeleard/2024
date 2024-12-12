@@ -5,7 +5,10 @@ public class Child(string name, Behavior behavior)
     private readonly WishList _wishList = new();
 
     public void SetWishList(Toy firstChoice, Toy secondChoice, Toy thirdChoice)
-        => _wishList.AddFirstWish(firstChoice).AddThen(secondChoice).AddThen(thirdChoice);
+        => _wishList
+            .AddFirstWish(firstChoice)
+            .AddThen(secondChoice)
+            .AddThen(thirdChoice);
 
     public Toy? ChooseToy() => behavior switch
     {
