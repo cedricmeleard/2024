@@ -12,7 +12,7 @@ public class Santa(IChildrenRepository childrenRepository)
         if (found == null)
             throw new InvalidOperationException("No such child found");
 
-        return found.GetToy();
+        return found.ChooseToy();
     }
 
     public void AddChild(Child child) =>
