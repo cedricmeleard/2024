@@ -1,20 +1,14 @@
 ﻿namespace Gifts;
 
-public class Child
+public class Child(string name, Behavior behavior)
 {
-    public string Name { get; }
-    public Behavior Behavior { get; }
-    public List<Toy> Wishlist { get; private set; }
+    public string Name { get; } = name;
+    public Behavior Behavior { get; } = behavior;
 
-    public Child(string name, Behavior behavior)
-    {
-        Name = name;
-        Behavior = behavior;
-        Wishlist = [];
-    }
+    public WishList WishList { get; } = new();
 
     public void SetWishList(Toy firstChoice, Toy secondChoice, Toy thirdChoice)
-        => Wishlist = [firstChoice, secondChoice, thirdChoice];
+        => WishList.AddFirstWish(firstChoice).AddThen(secondChoice).AddThen(thirdChoice);
 }
 
 public enum Behavior

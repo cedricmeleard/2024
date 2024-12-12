@@ -1,35 +1,25 @@
 ﻿namespace Gifts;
 
-public class Santa
+public class Santa(IChildrenRepository childrenRepository)
 {
-    private readonly List<Child> _childrenRepository = [];
-
     public Toy? ChooseToyForChild(string childName)
     {
-        Child? found = null;
-        for (int i = 0; i < _childrenRepository.Count; i++)
-        {
-            var currentChild = _childrenRepository[i];
-            if (currentChild.Name == childName)
-            {
-                found = currentChild;
-            }
-        }
+        var found = childrenRepository.FindChild(childName);
 
         if (found == null)
             throw new InvalidOperationException("No such child found");
 
-        if (found.Behavior == Behavior.Naughty)
-            return found.Wishlist[^1];
-
-        if (found.Behavior == Behavior.Nice)
-            return found.Wishlist[1];
-
-        if (found.Behavior == Behavior.VeryNice)
-            return found.Wishlist[0];
-
-        return null;
+        return found.Behavior switch
+        {
+            Behavior.Naughty => found.WishList.Get[^1],
+            Behavior.Nice => found.WishList.Get[1],
+            Behavior.VeryNice => found.WishList.Get[0],
+            _ => null
+        };
     }
 
-    public void AddChild(Child child) => _childrenRepository.Add(child);
+    public void AddChild(Child child) =>
+        // Actual implementation implies unique child names
+        // otherwise when we try to get the child by name, we always get the first one
+        childrenRepository.Add(child);
 }

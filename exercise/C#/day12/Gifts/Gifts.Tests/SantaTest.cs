@@ -8,13 +8,14 @@ public class SantaTest
     private static readonly Toy Playstation = new("playstation");
     private static readonly Toy Ball = new("ball");
     private static readonly Toy Plush = new("plush");
+    private readonly ChildrenRepository _childRepository = new();
 
     [Fact]
     public void GivenNaughtyChildWhenDistributingGiftsThenChildReceivesThirdChoice()
     {
         var bobby = new Child("bobby", Behavior.Naughty);
         bobby.SetWishList(Playstation, Plush, Ball);
-        var santa = new Santa();
+        var santa = new Santa(_childRepository);
         santa.AddChild(bobby);
         var got = santa.ChooseToyForChild("bobby");
 
@@ -26,7 +27,7 @@ public class SantaTest
     {
         var bobby = new Child("bobby", Behavior.Nice);
         bobby.SetWishList(Playstation, Plush, Ball);
-        var santa = new Santa();
+        var santa = new Santa(_childRepository);
         santa.AddChild(bobby);
         var got = santa.ChooseToyForChild("bobby");
 
@@ -38,7 +39,7 @@ public class SantaTest
     {
         var bobby = new Child("bobby", Behavior.VeryNice);
         bobby.SetWishList(Playstation, Plush, Ball);
-        var santa = new Santa();
+        var santa = new Santa(_childRepository);
         santa.AddChild(bobby);
         var got = santa.ChooseToyForChild("bobby");
 
@@ -48,7 +49,7 @@ public class SantaTest
     [Fact]
     public void GivenNonExistingChildWhenDistributingGiftsThenExceptionThrown()
     {
-        var santa = new Santa();
+        var santa = new Santa(_childRepository);
         var bobby = new Child("bobby", Behavior.VeryNice);
         bobby.SetWishList(Playstation, Plush, Ball);
         santa.AddChild(bobby);
