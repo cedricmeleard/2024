@@ -1,3 +1,3 @@
-﻿namespace Gifts;
+﻿namespace Gifts.Domain;
 
 public record Toy(string Description);

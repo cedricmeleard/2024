@@ -1,5 +1,8 @@
 global using Xunit;
+using System.Collections;
 using FluentAssertions;
+using Gifts.Adapters;
+using Gifts.Domain;
 
 namespace Gifts.Tests;
 
@@ -8,55 +11,50 @@ public class SantaTest
     private static readonly Toy Playstation = new("playstation");
     private static readonly Toy Ball = new("ball");
     private static readonly Toy Plush = new("plush");
-    private readonly ChildrenRepository _childRepository = new();
+    private readonly Santa _santa = new(new ChildrenRepository());
 
-    [Fact]
-    public void GivenNaughtyChildWhenDistributingGiftsThenChildReceivesThirdChoice()
+    [Theory]
+    [ClassData(typeof(GiftDistributionTestData))]
+    public void GivenNaughtyChildWhenDistributingGiftsThenChildReceivesThirdChoice(Behavior behavior, Toy toy)
     {
-        var bobby = new Child("bobby", Behavior.Naughty);
-        bobby.SetWishList(Playstation, Plush, Ball);
-        var santa = new Santa(_childRepository);
-        santa.AddChild(bobby);
-        var got = santa.ChooseToyForChild("bobby");
+        var bobby = AChild("bobby", behavior);
+        _santa.AddChild(bobby);
 
-        got.Should().Be(Ball);
-    }
+        var got = _santa.ChooseToyForChild("bobby");
 
-    [Fact]
-    public void GivenNiceChildWhenDistributingGiftsThenChildReceivesSecondChoice()
-    {
-        var bobby = new Child("bobby", Behavior.Nice);
-        bobby.SetWishList(Playstation, Plush, Ball);
-        var santa = new Santa(_childRepository);
-        santa.AddChild(bobby);
-        var got = santa.ChooseToyForChild("bobby");
-
-        got.Should().Be(Plush);
-    }
-
-    [Fact]
-    public void GivenVeryNiceChildWhenDistributingGiftsThenChildReceivesFirstChoice()
-    {
-        var bobby = new Child("bobby", Behavior.VeryNice);
-        bobby.SetWishList(Playstation, Plush, Ball);
-        var santa = new Santa(_childRepository);
-        santa.AddChild(bobby);
-        var got = santa.ChooseToyForChild("bobby");
-
-        got.Should().Be(Playstation);
+        got.Should().Be(toy);
     }
 
     [Fact]
     public void GivenNonExistingChildWhenDistributingGiftsThenExceptionThrown()
     {
-        var santa = new Santa(_childRepository);
-        var bobby = new Child("bobby", Behavior.VeryNice);
-        bobby.SetWishList(Playstation, Plush, Ball);
-        santa.AddChild(bobby);
+        var bobby = AChild("bobby", Behavior.VeryNice);
+        _santa.AddChild(bobby);
 
-        var chooseToyForChild = () => santa.ChooseToyForChild("alice");
+        var chooseToyForChild = () => _santa.ChooseToyForChild("alice");
         chooseToyForChild.Should()
             .Throw<InvalidOperationException>()
             .WithMessage("No such child found");
+    }
+
+    private static Child AChild(string name, Behavior behavior)
+    {
+        var bobby = new Child(name, behavior);
+        bobby.SetWishList(Playstation, Plush, Ball);
+        return bobby;
+    }
+
+    private class GiftDistributionTestData : IEnumerable<object[]>
+    {
+        private readonly List<object[]> _data =
+        [
+            new object[] { Behavior.Naughty, Ball },
+            new object[] { Behavior.Nice, Plush },
+            new object[] { Behavior.VeryNice, Playstation }
+        ];
+
+        public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

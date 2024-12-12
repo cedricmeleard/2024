@@ -1,11 +1,7 @@
-﻿namespace Gifts;
+﻿using Gifts.Domain;
+using Gifts.Ports;
 
-public interface IChildrenRepository
-{
-    Child? FindChild(string childName);
-
-    void Add(Child child);
-}
+namespace Gifts.Adapters;
 
 public class ChildrenRepository : IChildrenRepository
 {

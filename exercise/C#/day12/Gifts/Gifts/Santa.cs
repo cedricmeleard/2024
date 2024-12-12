@@ -1,4 +1,7 @@
-﻿namespace Gifts;
+﻿using Gifts.Domain;
+using Gifts.Ports;
+
+namespace Gifts;
 
 public class Santa(IChildrenRepository childrenRepository)
 {
@@ -9,13 +12,7 @@ public class Santa(IChildrenRepository childrenRepository)
         if (found == null)
             throw new InvalidOperationException("No such child found");
 
-        return found.Behavior switch
-        {
-            Behavior.Naughty => found.WishList.Get[^1],
-            Behavior.Nice => found.WishList.Get[1],
-            Behavior.VeryNice => found.WishList.Get[0],
-            _ => null
-        };
+        return found.GetToy();
     }
 
     public void AddChild(Child child) =>

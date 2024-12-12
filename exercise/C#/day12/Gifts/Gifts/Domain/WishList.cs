@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Gifts;
+namespace Gifts.Domain;
 
 public class WishList
 {
     private readonly List<Toy> _wishList = [];
-    public ReadOnlyCollection<Toy> Get => new(_wishList);
+    public ReadOnlyCollection<Toy> GetAtIndex => new(_wishList);
 
     public WishList AddFirstWish(Toy toy)
     {
