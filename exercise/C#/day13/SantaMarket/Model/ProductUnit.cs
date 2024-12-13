@@ -1,9 +1,8 @@
-namespace SantaMarket.Model
+namespace SantaMarket.Model;
+
+public enum ProductUnit
 {
-    public enum ProductUnit
-    {
-        Each,
-        Kilo,
-        Liter
-    }
+    Each,
+    Kilo,
+    Liter
 }

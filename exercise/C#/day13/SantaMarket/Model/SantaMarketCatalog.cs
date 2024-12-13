@@ -1,8 +1,7 @@
-namespace SantaMarket.Model
+namespace SantaMarket.Model;
+
+public interface ISantamarketCatalog
 {
-    public interface ISantamarketCatalog
-    {
-        void AddProduct(Product product, double price);
-        double GetUnitPrice(Product product);
-    }
+    void AddProduct(Product product, double price);
+    double GetUnitPrice(Product product);
 }

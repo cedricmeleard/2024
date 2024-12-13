@@ -1,10 +1,9 @@
-namespace SantaMarket.Model
+namespace SantaMarket.Model;
+
+public enum SpecialOfferType
 {
-    public enum SpecialOfferType
-    {
-        ThreeForTwo,
-        TenPercentDiscount,
-        TwoForAmount,
-        FiveForAmount
-    }
+    ThreeForTwo,
+    TenPercentDiscount,
+    TwoForAmount,
+    FiveForAmount
 }
