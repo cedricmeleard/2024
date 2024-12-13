@@ -15,13 +15,9 @@ public class ShoppingSleigh
     {
         _items.Add(new ProductQuantity(product, quantity));
         if (_productQuantities.ContainsKey(product))
-        {
             _productQuantities[product] += quantity;
-        }
         else
-        {
             _productQuantities[product] = quantity;
-        }
     }
 
     public void HandleOffers(Receipt receipt, Dictionary<Product, Offer> offers, ISantamarketCatalog catalog)
@@ -33,40 +29,47 @@ public class ShoppingSleigh
             {
                 var offer = offers[product];
                 var unitPrice = catalog.GetUnitPrice(product);
-                var quantityAsInt = (int) quantity;
-                Discount? discount = null;
+                var quantityAsInt = (int)quantity;
 
-                if (offer.OfferType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2)
-                {
-                    var total = offer.Argument * (quantityAsInt / 2) + (quantityAsInt % 2) * unitPrice;
-                    discount = new Discount(product, "2 for " + offer.Argument, -(unitPrice * quantity - total));
-                }
+                var discount = ApplySpecialOffersDiscounts(offer, quantityAsInt, unitPrice, product, quantity);
 
-                if (offer.OfferType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2)
-                {
-                    var discountAmount = quantity * unitPrice -
-                                         ((quantityAsInt / 3 * 2 * unitPrice) + (quantityAsInt % 3) * unitPrice);
-                    discount = new Discount(product, "3 for 2", -discountAmount);
-                }
-
-                if (offer.OfferType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5)
-                {
-                    var discountTotal = unitPrice * quantity -
-                                        (offer.Argument * (quantityAsInt / 5) + (quantityAsInt % 5) * unitPrice);
-                    discount = new Discount(product, "5 for " + offer.Argument, -discountTotal);
-                }
-                    
-                if (offer.OfferType == SpecialOfferType.TenPercentDiscount)
-                {
-                    discount = new Discount(product, offer.Argument + "% off",
-                        -quantity * unitPrice * offer.Argument / 100.0);
-                }
-                
                 if (discount != null)
-                {
                     receipt.AddDiscount(discount);
-                }
             }
         }
+    }
+
+    private static Discount? ApplySpecialOffersDiscounts(Offer offer, int quantityAsInt, double unitPrice,
+        Product product, double quantity)
+    {
+        Discount? discount = null;
+
+        if (offer.OfferType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2)
+        {
+            var total = offer.Argument * (quantityAsInt / 2) + quantityAsInt % 2 * unitPrice;
+            discount = new Discount(product, "2 for " + offer.Argument, -(unitPrice * quantity - total));
+        }
+
+        if (offer.OfferType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2)
+        {
+            var discountAmount = quantity * unitPrice -
+                                 (quantityAsInt / 3 * 2 * unitPrice + quantityAsInt % 3 * unitPrice);
+
+            discount = new Discount(product, "3 for 2", -discountAmount);
+        }
+
+        if (offer.OfferType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5)
+        {
+            var discountTotal = unitPrice * quantity -
+                                (offer.Argument * (quantityAsInt / 5) + quantityAsInt % 5 * unitPrice);
+
+            discount = new Discount(product, "5 for " + offer.Argument, -discountTotal);
+        }
+
+        if (offer.OfferType == SpecialOfferType.TenPercentDiscount)
+            discount = new Discount(product, offer.Argument + "% off",
+                -quantity * unitPrice * offer.Argument / 100.0);
+
+        return discount;
     }
 }
