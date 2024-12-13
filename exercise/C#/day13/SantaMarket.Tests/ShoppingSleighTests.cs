@@ -13,8 +13,8 @@ public class ShoppingSleighTests
         // Instanciate an offer with a quantity of 3 with a price of 100$
         // Assert that it returns a Discount of 100$
         var product = new Product(new Faker().Commerce.ProductName(), ProductUnit.Each);
-        
-        
         var offer = new Offer(SpecialOfferType.ThreeForTwo, product, new Faker().Random.Double());
+
+        var discount = ShoppingSleigh.HandleOffXforYers(offer, 3, 100, product, 3);
     }
 }
