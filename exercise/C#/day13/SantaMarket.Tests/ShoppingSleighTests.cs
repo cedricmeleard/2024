@@ -5,7 +5,11 @@ namespace SantaMarket.Tests;
 public class ShoppingSleighTests
 {
     [Fact]
-    public void ApplySpecialOffersDiscounts_With_3For2_Should_Apply_the_Correct_Discount()
+    public void HandleOffXforYers_Should_Return_ADiscounted_Price()
     {
+        // Instanciate an offer with a quantity of 3 with a price of 100$
+        // Instanciate a product with a quantity of 3
+        // Assert that it returns a Discount of 100$
+        
     }
 }
