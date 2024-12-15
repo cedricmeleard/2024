@@ -34,9 +34,6 @@ public class BusinessTest
 
     public class Failures
     {
-        private const string ChildNotNiceThisYearMessage = "Missing gift: Child wasn't nice this year!";
-        private const string GiftMisplacedByElvesMessage = "Missing gift: The gift has probably been misplaced by the elves!";
-        private const string GiftNotManufacturedMessage = "Missing gift: Gift wasn't manufactured!";
         private readonly Factory _factory = new();
         private readonly Inventory _inventory = new();
 
