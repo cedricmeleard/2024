@@ -7,21 +7,18 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
         var inSleigh = new Sleigh();
         foreach (var child in children)
         {
-            LoadGiftForChild(child, inSleigh);
+            wishList
+                .IdentifyGift(child)
+                .IfSome(gift => factory.FindManufacturedGift(gift)
+                    .Match(manufactured =>
+                        {
+                            inventory
+                                .PickUpGift(manufactured.BarCode)
+                                .Match(pickedGift => inSleigh.AddGift(child, pickedGift),
+                                    () => inSleigh.AddMisplacedGift(child));
+                        },
+                        () => inSleigh.AddNotManufactured(child)));
         }
         return inSleigh;
     }
-
-    private void LoadGiftForChild(Child child, Sleigh list)
-        => wishList
-            .IdentifyGift(child)
-            .IfSome(gift => factory.FindManufacturedGift(gift)
-                .Match(manufactured => LoadManufacturedGift(child, list, manufactured),
-                    () => list.AddNotManufactured(child)));
-
-    private void LoadManufacturedGift(Child child, Sleigh list, ManufacturedGift manufactured)
-        => inventory
-            .PickUpGift(manufactured.BarCode)
-            .Match(pickedGift => list.AddGift(child, pickedGift),
-                () => list.AddMisplacedGift(child));
 }
