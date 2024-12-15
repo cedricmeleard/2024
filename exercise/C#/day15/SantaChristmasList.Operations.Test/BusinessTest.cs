@@ -41,6 +41,8 @@ public class BusinessTest
         private readonly ManufacturedGift _manufacturedGift = new(BarCode);
         private readonly Business _sut;
 
+        private const string NotNiceThisYearError = "Missing gift: {0} wasn't nice this year!";
+
         public Failures()
         {
             _sut = new Business(_factory, _inventory, _wishList);
@@ -51,7 +53,8 @@ public class BusinessTest
         {
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be(string.Format("Missing gift: {0} wasn't nice this year!", _john.Name));
+
+            sleigh.GetGiftFor(_john).Should().Be(string.Format(NotNiceThisYearError, _john.Name));
         }
 
         [Fact]
@@ -61,7 +64,7 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be(string.Format("Missing gift: {0} wasn't nice this year!", _john.Name));
+            sleigh.GetGiftFor(_john).Should().Be(string.Format(NotNiceThisYearError, _john.Name));
         }
 
         [Fact]
@@ -72,7 +75,7 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be(string.Format("Missing gift: {0} wasn't nice this year!", _john.Name));
+            sleigh.GetGiftFor(_john).Should().Be(string.Format(NotNiceThisYearError, _john.Name));
         }
     }
 }
