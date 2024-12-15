@@ -34,7 +34,7 @@ public class BusinessTest
 
     public class Failures
     {
-        private const string NotNiceThisYearError = "Missing gift: Child wasn't nice this year!";
+        private const string ChildNotNiceThisYearMessage = "Missing gift: Child wasn't nice this year!";
         private const string GiftMisplacedByElvesMessage = "Missing gift: The gift has probably been misplaced by the elves!";
         private readonly Factory _factory = new();
         private readonly Inventory _inventory = new();
@@ -57,7 +57,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(NotNiceThisYearError);
+                .Be(ChildNotNiceThisYearMessage);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(NotNiceThisYearError);
+                .Be(ChildNotNiceThisYearMessage);
         }
 
         [Fact]
