@@ -57,7 +57,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(string.Format(NotNiceThisYearError, _john.Name));
+                .Be(NotNiceThisYearError);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(string.Format(NotNiceThisYearError, _john.Name));
+                .Be(NotNiceThisYearError);
         }
 
         [Fact]
