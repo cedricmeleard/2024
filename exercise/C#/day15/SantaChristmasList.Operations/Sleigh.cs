@@ -8,7 +8,7 @@ public class Sleigh
         => _gifts.GetValueOrDefault(child, SleighMessages.ChildNotNiceThisYearMessage);
 
     public void AddGift(Child child, Gift gift)
-        => _gifts.Add(child, string.Format(SleighMessages.giftHasBeenLoaded, gift.Name));
+        => _gifts.Add(child, string.Format(SleighMessages.GiftHasBeenLoaded, gift.Name));
 
     public void AddMisplacedGift(Child child)
         => _gifts.Add(child, SleighMessages.GiftMisplacedByElvesMessage);
