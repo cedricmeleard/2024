@@ -27,7 +27,9 @@ public class BusinessTest
 
         var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-        sleigh.GetGiftFor(_john).Should().Be($"Gift: {_toy.Name} has been loaded!");
+        sleigh.GetGiftFor(_john)
+            .Should()
+            .Be($"Gift: {_toy.Name} has been loaded!");
     }
 
     public class Failures
@@ -53,8 +55,9 @@ public class BusinessTest
         {
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-
-            sleigh.GetGiftFor(_john).Should().Be(string.Format(NotNiceThisYearError, _john.Name));
+            sleigh.GetGiftFor(_john)
+                .Should()
+                .Be(string.Format(NotNiceThisYearError, _john.Name));
         }
 
         [Fact]
@@ -64,7 +67,9 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be(string.Format(NotNiceThisYearError, _john.Name));
+            sleigh.GetGiftFor(_john)
+                .Should()
+                .Be(string.Format(NotNiceThisYearError, _john.Name));
         }
 
         [Fact]
@@ -75,7 +80,9 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be(string.Format(NotNiceThisYearError, _john.Name));
+            sleigh.GetGiftFor(_john)
+                .Should()
+                .Be(string.Format(NotNiceThisYearError, _john.Name));
         }
     }
 }
