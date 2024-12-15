@@ -19,7 +19,7 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                                     gift => inSleigh.AddGift(child, gift),
                                     error => inSleigh.AddError(child, error.Message));
                         },
-                        error => inSleigh.AddNotManufactured(child)));
+                        error => inSleigh.AddError(child, error.Message)));
         }
         return inSleigh;
     }
