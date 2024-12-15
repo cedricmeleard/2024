@@ -4,8 +4,8 @@ namespace SantaChristmasList.Operations;
 
 public class Factory : Dictionary<Gift, ManufacturedGift>
 {
-    public Option<ManufacturedGift> FindManufacturedGift(Gift gift)
-        => ContainsKey(gift) ? this[gift] : Option<ManufacturedGift>.None;
+    public Either<Error, ManufacturedGift> FindManufacturedGift(Gift gift)
+        => ContainsKey(gift) ? this[gift] : Error.New(SleighMessages.GiftNotManufacturedMessage);
 }
 
 public class Inventory : Dictionary<string, Gift>

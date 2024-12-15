@@ -10,7 +10,8 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
             wishList
                 .IdentifyGift(child)
                 .IfSome(gift => factory.FindManufacturedGift(gift)
-                    .Match(manufactured =>
+                    .Match(
+                        manufactured =>
                         {
                             inventory
                                 .PickUpGift(manufactured.BarCode)
@@ -18,7 +19,7 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                                     gift => inSleigh.AddGift(child, gift),
                                     error => inSleigh.AddError(child, error.Message));
                         },
-                        () => inSleigh.AddNotManufactured(child)));
+                        error => inSleigh.AddNotManufactured(child)));
         }
         return inSleigh;
     }
