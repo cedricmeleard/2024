@@ -21,7 +21,7 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                 }
                 else
                 {
-                    list.Add(child, "Missing gift: Gift wasn't manufactured!");
+                    list.AddNotManufactured(child);
                 }
             }
         }

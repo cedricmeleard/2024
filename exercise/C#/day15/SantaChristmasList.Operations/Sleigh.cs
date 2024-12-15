@@ -18,4 +18,9 @@ public class Sleigh : Dictionary<Child, string>
     {
         Add(child, "Missing gift: The gift has probably been misplaced by the elves!");
     }
+
+    public void AddNotManufactured(Child child)
+    {
+        Add(child, "Missing gift: Gift wasn't manufactured!");
+    }
 }
