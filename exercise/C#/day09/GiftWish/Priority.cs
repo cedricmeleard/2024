@@ -1,8 +1,7 @@
-namespace GiftWish
+namespace GiftWish;
+
+public enum Priority
 {
-    public enum Priority
-    {
-        Dream,
-        NiceToHave
-    }
+    Dream,
+    NiceToHave
 }
