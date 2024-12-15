@@ -16,11 +16,18 @@ public class Sleigh : Dictionary<Child, string>
 
     public void AddMisplacedGift(Child child)
     {
-        Add(child, "Missing gift: The gift has probably been misplaced by the elves!");
+        Add(child, SleighMessages.GiftMisplacedByElvesMessage);
     }
 
     public void AddNotManufactured(Child child)
     {
-        Add(child, "Missing gift: Gift wasn't manufactured!");
+        Add(child, SleighMessages.GiftNotManufacturedMessage);
     }
+}
+
+public static class SleighMessages
+{
+    public const string ChildNotNiceThisYearMessage = "Missing gift: Child wasn't nice this year!";
+    public const string GiftMisplacedByElvesMessage = "Missing gift: The gift has probably been misplaced by the elves!";
+    public const string GiftNotManufacturedMessage = "Missing gift: Gift wasn't manufactured!";
 }

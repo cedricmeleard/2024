@@ -58,7 +58,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(ChildNotNiceThisYearMessage);
+                .Be(SleighMessages.ChildNotNiceThisYearMessage);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(GiftNotManufacturedMessage);
+                .Be(SleighMessages.GiftNotManufacturedMessage);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(GiftMisplacedByElvesMessage);
+                .Be(SleighMessages.GiftMisplacedByElvesMessage);
         }
     }
 }
