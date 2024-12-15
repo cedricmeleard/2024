@@ -11,6 +11,12 @@ public class BusinessTest
     private readonly Child _john = new("John");
     private readonly Gift _toy = new("Toy");
     private readonly ManufacturedGift _manufacturedGift = new(BarCode);
+    private readonly Business _sut;
+
+    public BusinessTest()
+    {
+        _sut = new Business(_factory, _inventory, _wishList);
+    }
 
     [Fact]
     public void Gift_ShouldBeLoadedIntoSleigh()
@@ -19,8 +25,7 @@ public class BusinessTest
         _factory.Add(_toy, _manufacturedGift);
         _inventory.Add(BarCode, _toy);
 
-        var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.GetGiftFor(_john).Should().Be($"Gift: {_toy.Name} has been loaded!");
     }
@@ -29,7 +34,7 @@ public class BusinessTest
     public void Gift_ShouldNotBeLoaded_GivenChildIsNotOnWishList()
     {
         var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.ContainsGiftFor(_john).Should().BeFalse();
     }
@@ -39,7 +44,7 @@ public class BusinessTest
     {
         _wishList.Add(_john, _toy);
         var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.ContainsGiftFor(_john).Should().BeFalse();
     }
@@ -50,7 +55,7 @@ public class BusinessTest
         _wishList.Add(_john, _toy);
         _factory.Add(_toy, _manufacturedGift);
         var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.ContainsGiftFor(_john).Should().BeFalse();
     }
