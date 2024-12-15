@@ -10,12 +10,6 @@ public class Sleigh
     public void AddGift(Child child, Gift gift)
         => _gifts.Add(child, string.Format(SleighMessages.GiftHasBeenLoaded, gift.Name));
 
-    public void AddMisplacedGift(Child child)
-        => _gifts.Add(child, SleighMessages.GiftMisplacedByElvesMessage);
-
-    public void AddNotManufactured(Child child)
-        => _gifts.Add(child, SleighMessages.GiftNotManufacturedMessage);
-
     public void AddError(Child child, string errorMessage)
         => _gifts.Add(child, errorMessage);
 }
