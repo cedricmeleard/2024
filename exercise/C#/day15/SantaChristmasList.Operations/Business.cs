@@ -10,15 +10,9 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
             wishList
                 .IdentifyGift(child)
                 .Bind(gift => factory.FindManufacturedGift(gift))
+                .Bind(manufactured => inventory.PickUpGift(manufactured.BarCode))
                 .Match(
-                    manufactured =>
-                    {
-                        inventory
-                            .PickUpGift(manufactured.BarCode)
-                            .Match(
-                                gift => inSleigh.AddGift(child, gift),
-                                error => inSleigh.AddError(child, error.Message));
-                    },
+                    gift => inSleigh.AddGift(child, gift),
                     error => inSleigh.AddError(child, error.Message));
         }
         return inSleigh;
