@@ -13,17 +13,15 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
     }
 
     private void LoadGiftForChild(Child child, Sleigh list)
-    {
-        wishList
+        => wishList
             .IdentifyGift(child)
-            .IfSome(
-                gift => factory
-                    .FindManufacturedGift(gift)
-                    .Match(manufactured
-                            => inventory
-                                .PickUpGift(manufactured.BarCode)
-                                .Match(pickedGift => list.AddGift(child, pickedGift),
-                                    () => list.AddMisplacedGift(child)),
-                        () => list.AddNotManufactured(child)));
-    }
+            .IfSome(gift => factory.FindManufacturedGift(gift)
+                .Match(manufactured => LoadManufacturedGift(child, list, manufactured),
+                    () => list.AddNotManufactured(child)));
+
+    private void LoadManufacturedGift(Child child, Sleigh list, ManufacturedGift manufactured)
+        => inventory
+            .PickUpGift(manufactured.BarCode)
+            .Match(pickedGift => list.AddGift(child, pickedGift),
+                () => list.AddMisplacedGift(child));
 }
