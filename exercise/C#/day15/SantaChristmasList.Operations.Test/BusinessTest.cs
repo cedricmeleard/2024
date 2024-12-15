@@ -22,7 +22,7 @@ public class BusinessTest
         var sut = new Business(_factory, _inventory, _wishList);
         var sleigh = sut.LoadGiftsInSleigh(_john);
 
-        sleigh[_john].Should().Be($"Gift: {_toy.Name} has been loaded!");
+        sleigh.GetGiftFor(_john).Should().Be($"Gift: {_toy.Name} has been loaded!");
     }
 
     [Fact]
