@@ -13,10 +13,11 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                 var manufactured = factory.FindManufacturedGift(gift);
                 if (manufactured is not null)
                 {
-                    var finalGift = inventory.PickUpGift(manufactured.BarCode);
-                    finalGift.Match(
-                        finalGift1 => list.Add(child, $"Gift: {finalGift1.Name} has been loaded!"),
-                        () => list.Add(child, "Missing gift: The gift has probably been misplaced by the elves!"));
+                    inventory
+                        .PickUpGift(manufactured.BarCode)
+                        .Match(
+                            finalGift1 => list.Add(child, $"Gift: {finalGift1.Name} has been loaded!"),
+                            () => list.Add(child, "Missing gift: The gift has probably been misplaced by the elves!"));
                 }
                 else
                 {
