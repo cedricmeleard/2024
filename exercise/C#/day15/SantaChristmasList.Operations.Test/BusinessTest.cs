@@ -6,12 +6,12 @@ public class BusinessTest
 
     private readonly Factory _factory = new();
     private readonly Inventory _inventory = new();
-    private readonly WishList _wishList = new();
 
     private readonly Child _john = new("John");
-    private readonly Gift _toy = new("Toy");
     private readonly ManufacturedGift _manufacturedGift = new(BarCode);
     private readonly Business _sut;
+    private readonly Gift _toy = new("Toy");
+    private readonly WishList _wishList = new();
 
     public BusinessTest()
     {
@@ -34,16 +34,16 @@ public class BusinessTest
 
     public class Failures
     {
+        private const string NotNiceThisYearError = "Missing gift: {0} wasn't nice this year!";
+        private const string GiftMisplacedByElvesMessage = "Missing gift: The gift has probably been misplaced by the elves!";
         private readonly Factory _factory = new();
         private readonly Inventory _inventory = new();
-        private readonly WishList _wishList = new();
 
         private readonly Child _john = new("John");
-        private readonly Gift _toy = new("Toy");
         private readonly ManufacturedGift _manufacturedGift = new(BarCode);
         private readonly Business _sut;
-
-        private const string NotNiceThisYearError = "Missing gift: {0} wasn't nice this year!";
+        private readonly Gift _toy = new("Toy");
+        private readonly WishList _wishList = new();
 
         public Failures()
         {
@@ -82,7 +82,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(string.Format(NotNiceThisYearError, _john.Name));
+                .Be(string.Format(GiftMisplacedByElvesMessage, _john.Name));
         }
     }
 }

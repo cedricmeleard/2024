@@ -18,6 +18,10 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                     {
                         list.Add(child, $"Gift: {finalGift.Name} has been loaded!");
                     }
+                    else
+                    {
+                        list.Add(child, "Missing gift: The gift has probably been misplaced by the elves!");
+                    }
                 }
             }
         }
