@@ -14,7 +14,8 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
 
     private void LoadGiftForChild(Child child, Sleigh list)
     {
-        wishList.IdentifyGift(child)
+        wishList
+            .IdentifyGift(child)
             .IfSome(
                 gift => factory
                     .FindManufacturedGift(gift)

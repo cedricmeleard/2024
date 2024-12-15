@@ -1,26 +1,28 @@
 namespace SantaChristmasList.Operations;
 
-public class Sleigh : Dictionary<Child, string>
+public class Sleigh
 {
+    private readonly Dictionary<Child, string> _gifts = new();
+
     public string GetGiftFor(Child child)
     {
-        return !ContainsKey(child)
+        return !_gifts.ContainsKey(child)
             ? SleighMessages.ChildNotNiceThisYearMessage
-            : this[child];
+            : _gifts[child];
     }
 
     public void AddGift(Child child, Gift gift)
     {
-        Add(child, $"Gift: {gift.Name} has been loaded!");
+        _gifts.Add(child, $"Gift: {gift.Name} has been loaded!");
     }
 
     public void AddMisplacedGift(Child child)
     {
-        Add(child, SleighMessages.GiftMisplacedByElvesMessage);
+        _gifts.Add(child, SleighMessages.GiftMisplacedByElvesMessage);
     }
 
     public void AddNotManufactured(Child child)
     {
-        Add(child, SleighMessages.GiftNotManufacturedMessage);
+        _gifts.Add(child, SleighMessages.GiftNotManufacturedMessage);
     }
 }
