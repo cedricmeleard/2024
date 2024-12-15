@@ -19,6 +19,10 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                             ? $"Gift: {finalGift.Name} has been loaded!"
                             : "Missing gift: The gift has probably been misplaced by the elves!");
                 }
+                else
+                {
+                    list.Add(child, "Missing gift: Gift wasn't manufactured!");
+                }
             }
         }
         return list;
