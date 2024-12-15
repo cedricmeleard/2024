@@ -4,12 +4,12 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
 {
     public Sleigh LoadGiftsInSleigh(params Child[] children)
     {
-        var list = new Sleigh();
+        var inSleigh = new Sleigh();
         foreach (var child in children)
         {
-            LoadGiftForChild(child, list);
+            LoadGiftForChild(child, inSleigh);
         }
-        return list;
+        return inSleigh;
     }
 
     private void LoadGiftForChild(Child child, Sleigh list)
