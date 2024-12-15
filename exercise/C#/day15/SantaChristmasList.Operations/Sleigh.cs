@@ -15,4 +15,7 @@ public class Sleigh
 
     public void AddNotManufactured(Child child)
         => _gifts.Add(child, SleighMessages.GiftNotManufacturedMessage);
+
+    public void AddError(Child child, string errorMessage)
+        => _gifts.Add(child, errorMessage);
 }

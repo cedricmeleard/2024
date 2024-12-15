@@ -14,8 +14,9 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                         {
                             inventory
                                 .PickUpGift(manufactured.BarCode)
-                                .Match(pickedGift => inSleigh.AddGift(child, pickedGift),
-                                    () => inSleigh.AddMisplacedGift(child));
+                                .Match(
+                                    gift => inSleigh.AddGift(child, gift),
+                                    error => inSleigh.AddError(child, error.Message));
                         },
                         () => inSleigh.AddNotManufactured(child)));
         }
