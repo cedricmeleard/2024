@@ -31,7 +31,7 @@ public class BusinessTest
         var sut = new Business(_factory, _inventory, _wishList);
         var sleigh = sut.LoadGiftsInSleigh(_john);
 
-        sleigh.ContainsKey(_john).Should().BeFalse();
+        sleigh.ContainsGiftFor(_john).Should().BeFalse();
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class BusinessTest
         var sut = new Business(_factory, _inventory, _wishList);
         var sleigh = sut.LoadGiftsInSleigh(_john);
 
-        sleigh.ContainsKey(_john).Should().BeFalse();
+        sleigh.ContainsGiftFor(_john).Should().BeFalse();
     }
 
     [Fact]
@@ -52,6 +52,6 @@ public class BusinessTest
         var sut = new Business(_factory, _inventory, _wishList);
         var sleigh = sut.LoadGiftsInSleigh(_john);
 
-        sleigh.ContainsKey(_john).Should().BeFalse();
+        sleigh.ContainsGiftFor(_john).Should().BeFalse();
     }
 }
