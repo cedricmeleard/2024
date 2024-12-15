@@ -16,7 +16,7 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                     inventory
                         .PickUpGift(manufactured.BarCode)
                         .Match(
-                            finalGift1 => list.AddGift(child, finalGift1),
+                            pickedGift => list.AddGift(child, pickedGift),
                             () => list.AddMisplacedGift(child));
                 }
                 else
