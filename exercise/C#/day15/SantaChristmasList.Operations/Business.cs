@@ -17,7 +17,7 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
                         .PickUpGift(manufactured.BarCode)
                         .Match(
                             finalGift1 => list.AddGift(child, finalGift1),
-                            () => list.Add(child, "Missing gift: The gift has probably been misplaced by the elves!"));
+                            () => list.AddMisplacedGift(child));
                 }
                 else
                 {

@@ -13,4 +13,9 @@ public class Sleigh : Dictionary<Child, string>
     {
         Add(child, $"Gift: {gift.Name} has been loaded!");
     }
+
+    public void AddMisplacedGift(Child child)
+    {
+        Add(child, "Missing gift: The gift has probably been misplaced by the elves!");
+    }
 }
