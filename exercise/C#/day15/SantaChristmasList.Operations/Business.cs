@@ -9,7 +9,7 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
         {
             wishList
                 .IdentifyGift(child)
-                .Bind(gift => factory.FindManufacturedGift(gift))
+                .Bind(factory.FindManufacturedGift)
                 .Bind(manufactured => inventory.PickUpGift(manufactured.BarCode))
                 .Match(
                     gift => inSleigh.AddGift(child, gift),
