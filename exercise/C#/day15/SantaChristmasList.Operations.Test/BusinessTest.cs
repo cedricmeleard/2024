@@ -51,7 +51,7 @@ public class BusinessTest
         {
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be($"Missing gift: {_john.Name} wasn't nice this year!");
+            sleigh.GetGiftFor(_john).Should().Be(string.Format("Missing gift: {0} wasn't nice this year!", _john.Name));
         }
 
         [Fact]
@@ -61,7 +61,7 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be($"Missing gift: {_john.Name} wasn't nice this year!");
+            sleigh.GetGiftFor(_john).Should().Be(string.Format("Missing gift: {0} wasn't nice this year!", _john.Name));
         }
 
         [Fact]
@@ -72,7 +72,7 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.GetGiftFor(_john).Should().Be($"Missing gift: {_john.Name} wasn't nice this year!");
+            sleigh.GetGiftFor(_john).Should().Be(string.Format("Missing gift: {0} wasn't nice this year!", _john.Name));
         }
     }
 }
