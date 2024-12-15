@@ -33,7 +33,6 @@ public class BusinessTest
     [Fact]
     public void Gift_ShouldNotBeLoaded_GivenChildIsNotOnWishList()
     {
-        var sut = new Business(_factory, _inventory, _wishList);
         var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.ContainsGiftFor(_john).Should().BeFalse();
@@ -43,7 +42,7 @@ public class BusinessTest
     public void Gift_ShouldNotBeLoaded_GivenToyWasNotManufactured()
     {
         _wishList.Add(_john, _toy);
-        var sut = new Business(_factory, _inventory, _wishList);
+
         var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.ContainsGiftFor(_john).Should().BeFalse();
@@ -54,7 +53,7 @@ public class BusinessTest
     {
         _wishList.Add(_john, _toy);
         _factory.Add(_toy, _manufacturedGift);
-        var sut = new Business(_factory, _inventory, _wishList);
+
         var sleigh = _sut.LoadGiftsInSleigh(_john);
 
         sleigh.ContainsGiftFor(_john).Should().BeFalse();
