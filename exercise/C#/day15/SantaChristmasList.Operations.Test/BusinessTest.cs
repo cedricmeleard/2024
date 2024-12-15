@@ -30,32 +30,49 @@ public class BusinessTest
         sleigh.GetGiftFor(_john).Should().Be($"Gift: {_toy.Name} has been loaded!");
     }
 
-    [Fact]
-    public void Gift_ShouldNotBeLoaded_GivenChildIsNotOnWishList()
+    public class Failures
     {
-        var sleigh = _sut.LoadGiftsInSleigh(_john);
+        private readonly Factory _factory = new();
+        private readonly Inventory _inventory = new();
+        private readonly WishList _wishList = new();
 
-        sleigh.ContainsGiftFor(_john).Should().BeFalse();
-    }
+        private readonly Child _john = new("John");
+        private readonly Gift _toy = new("Toy");
+        private readonly ManufacturedGift _manufacturedGift = new(BarCode);
+        private readonly Business _sut;
 
-    [Fact]
-    public void Gift_ShouldNotBeLoaded_GivenToyWasNotManufactured()
-    {
-        _wishList.Add(_john, _toy);
+        public Failures()
+        {
+            _sut = new Business(_factory, _inventory, _wishList);
+        }
 
-        var sleigh = _sut.LoadGiftsInSleigh(_john);
+        [Fact]
+        public void Gift_ShouldNotBeLoaded_GivenChildIsNotOnWishList()
+        {
+            var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-        sleigh.ContainsGiftFor(_john).Should().BeFalse();
-    }
+            sleigh.ContainsGiftFor(_john).Should().BeFalse();
+        }
 
-    [Fact]
-    public void Gift_ShouldNotBeLoaded_GivenToyWasMisplaced()
-    {
-        _wishList.Add(_john, _toy);
-        _factory.Add(_toy, _manufacturedGift);
+        [Fact]
+        public void Gift_ShouldNotBeLoaded_GivenToyWasNotManufactured()
+        {
+            _wishList.Add(_john, _toy);
 
-        var sleigh = _sut.LoadGiftsInSleigh(_john);
+            var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-        sleigh.ContainsGiftFor(_john).Should().BeFalse();
+            sleigh.ContainsGiftFor(_john).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Gift_ShouldNotBeLoaded_GivenToyWasMisplaced()
+        {
+            _wishList.Add(_john, _toy);
+            _factory.Add(_toy, _manufacturedGift);
+
+            var sleigh = _sut.LoadGiftsInSleigh(_john);
+
+            sleigh.ContainsGiftFor(_john).Should().BeFalse();
+        }
     }
 }
