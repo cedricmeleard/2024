@@ -9,17 +9,17 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
         {
             wishList
                 .IdentifyGift(child)
-                .IfSome(gift => factory.FindManufacturedGift(gift)
-                    .Match(
-                        manufactured =>
-                        {
-                            inventory
-                                .PickUpGift(manufactured.BarCode)
-                                .Match(
-                                    gift => inSleigh.AddGift(child, gift),
-                                    error => inSleigh.AddError(child, error.Message));
-                        },
-                        error => inSleigh.AddError(child, error.Message)));
+                .Bind(gift => factory.FindManufacturedGift(gift))
+                .Match(
+                    manufactured =>
+                    {
+                        inventory
+                            .PickUpGift(manufactured.BarCode)
+                            .Match(
+                                gift => inSleigh.AddGift(child, gift),
+                                error => inSleigh.AddError(child, error.Message));
+                    },
+                    error => inSleigh.AddError(child, error.Message));
         }
         return inSleigh;
     }

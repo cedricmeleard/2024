@@ -16,6 +16,6 @@ public class Inventory : Dictionary<string, Gift>
 
 public class WishList : Dictionary<Child, Gift>
 {
-    public Option<Gift> IdentifyGift(Child child)
-        => ContainsKey(child) ? this[child] : Option<Gift>.None;
+    public Either<Error, Gift> IdentifyGift(Child child)
+        => ContainsKey(child) ? this[child] : Error.New(SleighMessages.ChildNotNiceThisYearMessage);
 }
