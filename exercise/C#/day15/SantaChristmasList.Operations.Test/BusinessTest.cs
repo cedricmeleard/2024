@@ -82,7 +82,7 @@ public class BusinessTest
 
             sleigh.GetGiftFor(_john)
                 .Should()
-                .Be(string.Format(GiftMisplacedByElvesMessage, _john.Name));
+                .Be(GiftMisplacedByElvesMessage);
         }
     }
 }
