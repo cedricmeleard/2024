@@ -61,7 +61,7 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.ContainsGiftFor(_john).Should().BeFalse();
+            sleigh.GetGiftFor(_john).Should().BeNull();
         }
 
         [Fact]
@@ -72,7 +72,7 @@ public class BusinessTest
 
             var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-            sleigh.ContainsGiftFor(_john).Should().BeFalse();
+            sleigh.GetGiftFor(_john).Should().BeNull();
         }
     }
 }
