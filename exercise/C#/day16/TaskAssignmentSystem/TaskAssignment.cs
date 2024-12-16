@@ -1,80 +1,73 @@
 namespace TaskAssignmentSystem
 {
-    public class TaskAssignment(IEnumerable<Elf> elves)
+    public class TaskAssignmentService
     {
-        public bool ReportTaskCompletion(int elfId)
-        {
-            var elf = elves.FirstOrDefault(e => e.Id == elfId);
-            if (elf != null)
-            {
-                TotalTasksCompleted++;
-                return true;
-            }
-
-            return false;
-        }
-
+        private readonly List<Elf> _elves;
         public int TotalTasksCompleted { get; private set; }
 
-        public Elf ElfWithHighestSkill()
-            => elves.Aggregate((prev, current) => prev.SkillLevel > current.SkillLevel ? prev : current);
+        // Constructor
+        public TaskAssignmentService(IEnumerable<Elf> elves)
+        {
+            if (elves == null || !elves.Any()) throw new ArgumentException("A list of elves is required.");
+            _elves = elves.ToList();
+        }
 
+        // Report Task Completion
+        public bool ReportTaskCompletion(int elfId)
+        {
+            var elf = FindElfById(elfId);
+            if (elf == null) return false;
+
+            TotalTasksCompleted++;
+            return true;
+        }
+
+        // Get the Elf with the Highest Skill Level
+        public Elf GetElfWithHighestSkill()
+        {
+            return _elves.OrderByDescending(elf => elf.SkillLevel).First();
+        }
+
+        // Assign Task Based on Skills
         public Elf AssignTask(int taskSkillRequired)
-            => elves.FirstOrDefault(elf => elf.SkillLevel >= taskSkillRequired + 1);
-
-        public void IncreaseSkillLevel(int elfId, int increment)
         {
-            var elf = elves.FirstOrDefault(e => e.Id == elfId);
-            if (elf != null)
-            {
-                elf.SkillLevel += increment;
-            }
+            return _elves.FirstOrDefault(elf => elf.SkillLevel >= taskSkillRequired);
         }
 
-        public void DecreaseSkillLevel(int elfId, int decrement)
+        // Reassign Tasks
+        // Task reassignment works only if the "from" elf has a lower or equal skill level compared to the "to" elf.
+        public bool TryReassignTask(int fromElfId, int toElfId)
         {
-            var elf = elves.FirstOrDefault(e => e.Id == elfId);
-            if (elf != null)
-            {
-                // Ensure skill level does not go below 1
-                elf.SkillLevel = Math.Max(elf.SkillLevel - decrement, 1);
-            }
+            var fromElf = FindElfById(fromElfId);
+            var toElf = FindElfById(toElfId);
+
+            if (fromElf == null || toElf == null) return false;
+            if (fromElf.SkillLevel > toElf.SkillLevel) return false;
+
+            return true;
         }
 
-        // Ignore this function and use AssignTask instead
-        public Elf AssignTaskBasedOnAvailability(int taskSkillRequired)
+        // Get Elves by Skill in Descending Order
+        public List<Elf> GetElvesBySkillDescending()
         {
-            var availableElves = elves.Where(elf => elf.SkillLevel >= taskSkillRequired).ToList();
-            if (availableElves.Any())
-            {
-                var random = new Random();
-                return availableElves[random.Next(availableElves.Count)];
-            }
-
-            return null;
+            return _elves.OrderByDescending(elf => elf.SkillLevel).ToList();
         }
 
-        public bool ReassignTask(int fromElfId, int toElfId)
-        {
-            var fromElf = elves.FirstOrDefault(e => e.Id == fromElfId);
-            var toElf = elves.FirstOrDefault(e => e.Id == toElfId);
-
-            if (fromElf != null && toElf != null && fromElf.SkillLevel <= toElf.SkillLevel)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public List<Elf> ElvesBySkillDescending() => elves.OrderByDescending(e => e.SkillLevel).ToList();
-
+        // Reset All Skills to a Baseline Level
         public void ResetAllSkillsToBaseline(int baseline)
         {
-            foreach (var elf in elves)
+            if (baseline <= 0) throw new ArgumentException("Baseline must be positive.");
+
+            foreach (var elf in _elves)
             {
-                elf.SkillLevel = baseline;
+                elf.SetSkillLevel(baseline);
             }
+        }
+
+        // Private Helper Methods
+        private Elf FindElfById(int elfId)
+        {
+            return _elves.FirstOrDefault(e => e.Id == elfId);
         }
     }
 }

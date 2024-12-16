@@ -1,12 +1,14 @@
 using FluentAssertions;
 using Xunit;
 
+using TaskAssignmentSystem;
+
 namespace TaskAssignmentSystem.Tests
 {
     public class TaskAssignmentTests2
     {
         private readonly List<Elf> _elves;
-        private readonly TaskAssignment _system;
+        private readonly TaskAssignmentService _system;
 
         public TaskAssignmentTests2()
         {
@@ -17,7 +19,7 @@ namespace TaskAssignmentSystem.Tests
                 new(2, 10), // Elf 2: Skill 10
                 new(3, 20)  // Elf 3: Skill 20
             };
-            _system = new TaskAssignment(_elves);
+            _system = new TaskAssignmentService(_elves);
         }
 
         // 1. Tests for ReportTaskCompletion
@@ -48,7 +50,7 @@ namespace TaskAssignmentSystem.Tests
         public void ElfWithHighestSkill_ShouldReturnCorrectElf()
         {
             // Act
-            var highestSkillElf = _system.ElfWithHighestSkill();
+            var highestSkillElf = _system.GetElfWithHighestSkill();
 
             // Assert
             highestSkillElf.Should().BeEquivalentTo(_elves.First(e => e.Id == 3));
@@ -80,7 +82,7 @@ namespace TaskAssignmentSystem.Tests
         public void IncreaseSkillLevel_ShouldIncreaseSkill_WhenElfExists()
         {
             // Act
-            _system.IncreaseSkillLevel(1, 5); // Increase Elf 1's skill level by 5
+            _elves.First()?.IncreaseSkill(5); // Increase Elf 1's skill level by 5
 
             // Assert
             var updatedElf = _elves.First(e => e.Id == 1);
@@ -91,7 +93,7 @@ namespace TaskAssignmentSystem.Tests
         public void IncreaseSkillLevel_ShouldDoNothing_WhenElfDoesNotExist()
         {
             // Act
-            _system.IncreaseSkillLevel(99, 5); // Nonexistent Elf ID
+            _elves.FirstOrDefault(x => x.Id == 99)?.IncreaseSkill(5); // Nonexistent Elf ID
 
             // Assert
             _elves.FirstOrDefault(e => e.Id == 1)?.SkillLevel.Should().Be(5); // Skills unchanged
@@ -102,7 +104,7 @@ namespace TaskAssignmentSystem.Tests
         public void DecreaseSkillLevel_ShouldReduceSkill_WhenElfExists()
         {
             // Act
-            _system.DecreaseSkillLevel(1, 3); // Decrease skill of Elf 1 by 3
+            _elves.Find(x => x.Id == 1)?.DecreaseSkill(3); // Decrease skill of Elf 1 by 3
 
             // Assert
             var updatedElf = _elves.First(e => e.Id == 1);
@@ -113,7 +115,7 @@ namespace TaskAssignmentSystem.Tests
         public void DecreaseSkillLevel_ShouldNotReduceSkillBelowOne()
         {
             // Act
-            _system.DecreaseSkillLevel(1, 10); // Attempt to reduce below 1
+            _elves.Find(x => x.Id == 1)?.DecreaseSkill(10); // Attempt to reduce below 1
 
             // Assert
             var updatedElf = _elves.First(e => e.Id == 1);
@@ -124,7 +126,7 @@ namespace TaskAssignmentSystem.Tests
         public void DecreaseSkillLevel_ShouldDoNothing_WhenElfDoesNotExist()
         {
             // Act
-            _system.DecreaseSkillLevel(99, 5); // Nonexistent Elf ID
+            _elves.Find(x => x.Id == 99)?.DecreaseSkill(5); // Nonexistent Elf ID
 
             // Assert
             _elves.FirstOrDefault(e => e.Id == 1)?.SkillLevel.Should().Be(5); // Skills unchanged
@@ -135,7 +137,7 @@ namespace TaskAssignmentSystem.Tests
         public void ReassignTask_ShouldReturnTrue_WhenConditionsAreMet()
         {
             // Act
-            var result = _system.ReassignTask(1, 2); // Elf 1 to Elf 2 (5 <= 10)
+            var result = _system.TryReassignTask(1, 2); // Elf 1 to Elf 2 (5 <= 10)
 
             // Assert
             result.Should().BeTrue();
@@ -145,7 +147,7 @@ namespace TaskAssignmentSystem.Tests
         public void ReassignTask_ShouldReturnFalse_WhenConditionsAreNotMet()
         {
             // Act
-            var result = _system.ReassignTask(2, 1); // Elf 2 to Elf 1 (10 > 5)
+            var result = _system.TryReassignTask(2, 1); // Elf 2 to Elf 1 (10 > 5)
 
             // Assert
             result.Should().BeFalse();
@@ -155,7 +157,7 @@ namespace TaskAssignmentSystem.Tests
         public void ReassignTask_ShouldReturnFalse_WhenOneElfDoesNotExist()
         {
             // Act
-            var result = _system.ReassignTask(1, 99); // Nonexistent target elf
+            var result = _system.TryReassignTask(1, 99); // Nonexistent target elf
 
             // Assert
             result.Should().BeFalse();
@@ -166,7 +168,7 @@ namespace TaskAssignmentSystem.Tests
         public void ElvesBySkillDescending_ShouldReturnElvesInDescendingOrder()
         {
             // Act
-            var sortedElves = _system.ElvesBySkillDescending();
+            var sortedElves = _system.GetElvesBySkillDescending();
 
             // Assert
             var expectedOrder = _elves.OrderByDescending(e => e.SkillLevel).ToList();
