@@ -58,9 +58,8 @@ namespace TaskAssignmentSystem
             var fromElf = elves.FirstOrDefault(e => e.Id == fromElfId);
             var toElf = elves.FirstOrDefault(e => e.Id == toElfId);
 
-            if (fromElf != null && toElf != null && fromElf.SkillLevel > toElf.SkillLevel)
+            if (fromElf != null && toElf != null && fromElf.SkillLevel <= toElf.SkillLevel)
             {
-                toElf.SkillLevel = fromElf.SkillLevel;
                 return true;
             }
 

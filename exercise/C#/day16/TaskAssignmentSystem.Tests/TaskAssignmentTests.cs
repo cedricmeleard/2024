@@ -6,18 +6,104 @@ namespace TaskAssignmentSystem.Tests;
 public class TaskAssignmentTests
 {
     private readonly TaskAssignment _system;
-
+    private readonly List<Elf> _elves =
+    [
+        new(1, 5),
+        new(2, 10),
+        new(3, 20)
+    ];
     public TaskAssignmentTests()
     {
-        var elves = new List<Elf>
-        {
-            new(1, 5),
-            new(2, 10),
-            new(3, 20)
-        };
-        _system = new TaskAssignment(elves);
+        
+        _system = new TaskAssignment(_elves);
     }
 
+    [Fact]
+    public void ReassignTask_ShouldNotChangeElfSkillLevels()
+    {
+        // Act
+        var success = _system.ReassignTask(1, 2);
+
+        // Assert
+        success.Should().BeTrue();
+        var alice = _elves.First(e => e.Id == 1);
+        var bob = _elves.First(e => e.Id == 2);
+        alice.SkillLevel.Should().Be(5); 
+        bob.SkillLevel.Should().Be(10); 
+    }
+    
+    [Fact]
+    public void ResetAllSkillsToBaseline_ShouldSetAllElfSkillsToBaseline()
+    {
+        // Arrange
+        var elves = new List<Elf>
+        {
+            new(1, 3),  // Alice
+            new(2, 5),  // Bob
+            new(3, 7)   // Charlie
+        };
+        var system = new TaskAssignment(elves);
+
+        // Act
+        system.ResetAllSkillsToBaseline(10);
+
+        // Assert
+        foreach (var elf in elves)
+        {
+            elf.SkillLevel.Should().Be(10);
+        }
+    }
+    
+    [Fact]
+    public void AssignTaskBasedOnAvailability_ShouldBeDeterministic()
+    {
+        // Arrange
+        var elves = new List<Elf>
+        {
+            new(1, 3),  // Alice
+            new(2, 5),  // Bob
+            new(3, 7)   // Charlie
+        };
+        var system = new TaskAssignment(elves);
+
+        // Act
+        var assignedElf1 = system.AssignTaskBasedOnAvailability(4);
+        var assignedElf2 = system.AssignTaskBasedOnAvailability(4);
+
+        // Assert: Both assignments should be consistent
+        assignedElf1.Should().NotBeNull();
+        assignedElf1.Should().BeEquivalentTo(assignedElf2);
+    }
+    
+    [Fact]
+    public void DecreaseSkillLevel_ShouldNotReduceSkillBelowOne()
+    {
+        // Arrange
+        var elves = new List<Elf>
+        {
+            new(1, 3),  // Alice
+            new(2, 5),  // Bob
+        };
+        var system = new TaskAssignment(elves);
+
+        // Act
+        system.DecreaseSkillLevel(1, 10); // Excessive decrement
+
+        // Assert
+        var alice = elves.First(e => e.Id == 1);
+        alice.SkillLevel.Should().Be(1); // Skill should not go below 1
+    }
+    
+    [Fact]
+    public void AssignTask_ShouldAssignToAnyQualifiedElf()
+    {
+        // Act
+        var assignedElf = _system.AssignTask(4);
+
+        // Assert: Either Alice or Bob can be assigned
+        new List<int> { 1, 2 }.Should().Contain(assignedElf.Id);
+    }
+    
     [Fact]
     public void ReportTaskCompletion_IncreasesTotalTasksCompleted()
     {
@@ -65,11 +151,17 @@ public class TaskAssignmentTests
     }
 
     [Fact]
-    public void ReassignTask_ChangesAssignmentCorrectly()
+    public void ReassignTask_ToAnElf_WithSufficientSkills_ChangesAssignmentCorrectly()
     {
-        _system.ReassignTask(3, 1);
-        var elf = _system.AssignTask(19);
-        elf.Id.Should().Be(1);
+        var result = _system.ReassignTask(1, 3);
+        result.Should().BeTrue();
+    }
+    
+    [Fact]
+    public void ReassignTask_ToAnElf_WithInSufficientSkills_DoesNotChangesAssignment()
+    {
+        var result = _system.ReassignTask(3, 1);
+        result.Should().BeFalse();
     }
 
     [Fact]
