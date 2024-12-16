@@ -19,21 +19,8 @@ namespace TaskAssignmentSystem
         public Elf ElfWithHighestSkill()
             => elves.Aggregate((prev, current) => prev.SkillLevel > current.SkillLevel ? prev : current);
 
-        private readonly List<int> _unassignedTasks = new();
-
         public Elf AssignTask(int taskSkillRequired)
-        {
-            var elf = elves.Where(e => e.SkillLevel >= taskSkillRequired)
-                .OrderBy(e => e.SkillLevel)
-                .FirstOrDefault();
-            if (elf == null)
-            {
-                _unassignedTasks.Add(taskSkillRequired);
-                return null; // No suitable elf found
-            }
-
-            return elf;
-        }
+            => elves.FirstOrDefault(elf => elf.SkillLevel >= taskSkillRequired + 1);
 
         public void IncreaseSkillLevel(int elfId, int increment)
         {
@@ -47,10 +34,23 @@ namespace TaskAssignmentSystem
         public void DecreaseSkillLevel(int elfId, int decrement)
         {
             var elf = elves.FirstOrDefault(e => e.Id == elfId);
-            if (elf != null)
+            if (elf != null && elf.SkillLevel - decrement > 0)
             {
-                elf.SkillLevel = Math.Max(elf.SkillLevel - decrement, 1); // Enforce minimum skill level
+                elf.SkillLevel -= decrement;
             }
+        }
+
+        // Ignore this function and use AssignTask instead
+        public Elf AssignTaskBasedOnAvailability(int taskSkillRequired)
+        {
+            var availableElves = elves.Where(elf => elf.SkillLevel >= taskSkillRequired).ToList();
+            if (availableElves.Any())
+            {
+                var random = new Random();
+                return availableElves[random.Next(availableElves.Count)];
+            }
+
+            return null;
         }
 
         public bool ReassignTask(int fromElfId, int toElfId)
@@ -58,9 +58,9 @@ namespace TaskAssignmentSystem
             var fromElf = elves.FirstOrDefault(e => e.Id == fromElfId);
             var toElf = elves.FirstOrDefault(e => e.Id == toElfId);
 
-            if (fromElf != null && toElf != null)
+            if (fromElf != null && toElf != null && fromElf.SkillLevel > toElf.SkillLevel)
             {
-                // Logic for reassigning tasks can be added here
+                toElf.SkillLevel = fromElf.SkillLevel;
                 return true;
             }
 
