@@ -31,7 +31,7 @@ namespace TaskAssignmentSystem
         // Assign Task Based on Skills
         public Elf AssignTask(int taskSkillRequired)
         {
-            return _elves.FirstOrDefault(elf => elf.SkillLevel >= taskSkillRequired);
+            return _elves.FirstOrDefault(elf => elf.SkillLevel >= taskSkillRequired + 1);
         }
 
         // Reassign Tasks
