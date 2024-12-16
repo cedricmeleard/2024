@@ -6,7 +6,7 @@ namespace TaskAssignmentSystem.Tests;
 public class TaskAssignmentTests
 {
     private readonly TaskAssignmentService _system;
-    private readonly List<Elf> _elves =
+    private readonly List<Elf?> _elves =
     [
         new(1, 5),
         new(2, 10),
@@ -165,7 +165,7 @@ public class TaskAssignmentTests
     [Fact]
     public void TaskAssignmentService_ShouldThrowException_WhenElvesListIsEmpty()
     {
-        Action act = () => new TaskAssignmentService(new List<Elf>());
+        Action act = () => new TaskAssignmentService(new List<Elf?>());
 
         act.Should().Throw<ArgumentException>().WithMessage("A list of elves is required.");
     }
@@ -173,7 +173,7 @@ public class TaskAssignmentTests
     [Fact]
     public void AssignTask_ShouldReturnElf_WhenExactSkillLevelMatches()
     {
-        var elves = new List<Elf>
+        var elves = new List<Elf?>
         {
             new Elf(1, 5),
             new Elf(2, 8)
@@ -188,7 +188,7 @@ public class TaskAssignmentTests
     [Fact]
     public void AssignTask_ShouldReturnNull_WhenNoMatchingElf()
     {
-        var elves = new List<Elf>
+        var elves = new List<Elf?>
         {
             new Elf(1, 5),
             new Elf(2, 8)
@@ -203,7 +203,7 @@ public class TaskAssignmentTests
     [Fact]
     public void ReassignTask_ShouldReturnFalse_WhenFromElfSkillExceedsToElf()
     {
-        var elves = new List<Elf>
+        var elves = new List<Elf?>
         {
             new Elf(1, 10),
             new Elf(2, 5)
@@ -218,7 +218,7 @@ public class TaskAssignmentTests
     [Fact]
     public void ReassignTask_ShouldReturnFalse_WhenEitherElfDoesNotExist()
     {
-        var elves = new List<Elf>
+        var elves = new List<Elf?>
         {
             new Elf(1, 10),
             new Elf(2, 5)
@@ -233,7 +233,7 @@ public class TaskAssignmentTests
     [Fact]
     public void ResetAllSkillsToBaseline_ShouldSetSkillLevelsToBaseline()
     {
-        var elves = new List<Elf>
+        var elves = new List<Elf?>
         {
             new Elf(1, 10),
             new Elf(2, 15)
@@ -248,7 +248,7 @@ public class TaskAssignmentTests
     [Fact]
     public void ResetAllSkillsToBaseline_ShouldThrowException_WhenBaselineIsInvalid()
     {
-        var elves = new List<Elf>
+        var elves = new List<Elf?>
         {
             new Elf(1, 10),
             new Elf(2, 15)

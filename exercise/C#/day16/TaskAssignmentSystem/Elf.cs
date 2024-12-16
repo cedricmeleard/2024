@@ -1,37 +1,36 @@
-namespace TaskAssignmentSystem
+namespace TaskAssignmentSystem;
+
+public class Elf
 {
-    public class Elf
+    // Properties
+    public int Id { get; }
+    public int SkillLevel { get; private set; }
+
+    // Constructor
+    public Elf(int id, int skillLevel)
     {
-        // Properties
-        public int Id { get; }
-        public int SkillLevel { get; private set; }
+        if (id <= 0) throw new ArgumentException("Id must be positive.");
+        if (skillLevel <= 0) throw new ArgumentException("Skill level must be positive.");
 
-        // Constructor
-        public Elf(int id, int skillLevel)
-        {
-            if (id <= 0) throw new ArgumentException("Id must be positive.");
-            if (skillLevel <= 0) throw new ArgumentException("Skill level must be positive.");
+        Id = id;
+        SkillLevel = skillLevel;
+    }
 
-            Id = id;
-            SkillLevel = skillLevel;
-        }
+    // Behavior
+    public void IncreaseSkill(int increment)
+    {
+        if (increment <= 0) throw new ArgumentException("Increment must be positive.");
+        SkillLevel += increment;
+    }
 
-        // Behavior
-        public void IncreaseSkill(int increment)
-        {
-            if (increment <= 0) throw new ArgumentException("Increment must be positive.");
-            SkillLevel += increment;
-        }
+    public void DecreaseSkill(int decrement)
+    {
+        if (decrement <= 0) throw new ArgumentException("Decrement must be positive.");
+        SkillLevel = Math.Max(1, SkillLevel - decrement);
+    }
 
-        public void DecreaseSkill(int decrement)
-        {
-            if (decrement <= 0) throw new ArgumentException("Decrement must be positive.");
-            SkillLevel = Math.Max(1, SkillLevel - decrement);
-        }
-
-        public void SetSkillLevel(int baseline)
-        {
-            SkillLevel = baseline;
-        }
+    public void SetSkillLevel(int baseline)
+    {
+        SkillLevel = baseline;
     }
 }
