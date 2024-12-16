@@ -60,7 +60,7 @@ public class TaskAssignmentTests
     [Fact]
     public void AssignTaskBasedOnAvailability_AssignsAvailableElf()
     {
-        var elf = _system.AssignTaskBasedOnAvailability(10);
+        var elf = _system.AssignTask(10);
         elf.Should().NotBeNull();
     }
 
