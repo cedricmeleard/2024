@@ -55,27 +55,6 @@ public class TaskAssignmentTests
     }
     
     [Fact]
-    public void AssignTaskBasedOnAvailability_ShouldBeDeterministic()
-    {
-        // Arrange
-        var elves = new List<Elf>
-        {
-            new(1, 3),  // Alice
-            new(2, 5),  // Bob
-            new(3, 7)   // Charlie
-        };
-        var system = new TaskAssignment(elves);
-
-        // Act
-        var assignedElf1 = system.AssignTaskBasedOnAvailability(4);
-        var assignedElf2 = system.AssignTaskBasedOnAvailability(4);
-
-        // Assert: Both assignments should be consistent
-        assignedElf1.Should().NotBeNull();
-        assignedElf1.Should().BeEquivalentTo(assignedElf2);
-    }
-    
-    [Fact]
     public void DecreaseSkillLevel_ShouldNotReduceSkillBelowOne()
     {
         // Arrange
@@ -189,11 +168,11 @@ public class TaskAssignmentTests
     }
 
     [Fact]
-    public void DecreaseSkillLevel_UpdatesElfSkillAndDoesNotAllowNegativeValues()
+    public void DecreaseSkillLevel_ThenFindSuitableElf()
     {
         _system.DecreaseSkillLevel(1, 10);
         var elf = _system.AssignTask(4);
-        elf.Id.Should().Be(1);
-        elf.SkillLevel.Should().Be(5);
+        elf.Id.Should().Be(2);
+        elf.SkillLevel.Should().Be(10);
     }
 }

@@ -34,9 +34,10 @@ namespace TaskAssignmentSystem
         public void DecreaseSkillLevel(int elfId, int decrement)
         {
             var elf = elves.FirstOrDefault(e => e.Id == elfId);
-            if (elf != null && elf.SkillLevel - decrement > 0)
+            if (elf != null)
             {
-                elf.SkillLevel -= decrement;
+                // Ensure skill level does not go below 1
+                elf.SkillLevel = Math.Max(elf.SkillLevel - decrement, 1);
             }
         }
 
