@@ -6,11 +6,17 @@ public class BusinessTest
 
     private readonly Factory _factory = new();
     private readonly Inventory _inventory = new();
-    private readonly WishList _wishList = new();
 
     private readonly Child _john = new("John");
-    private readonly Gift _toy = new("Toy");
     private readonly ManufacturedGift _manufacturedGift = new(BarCode);
+    private readonly Business _sut;
+    private readonly Gift _toy = new("Toy");
+    private readonly WishList _wishList = new();
+
+    public BusinessTest()
+    {
+        _sut = new Business(_factory, _inventory, _wishList);
+    }
 
     [Fact]
     public void Gift_ShouldBeLoadedIntoSleigh()
@@ -19,39 +25,62 @@ public class BusinessTest
         _factory.Add(_toy, _manufacturedGift);
         _inventory.Add(BarCode, _toy);
 
-        var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-        sleigh[_john].Should().Be("Gift: Toy has been loaded!");
+        sleigh.GetGiftFor(_john)
+            .Should()
+            .Be($"Gift: {_toy.Name} has been loaded!");
     }
 
-    [Fact]
-    public void Gift_ShouldNotBeLoaded_GivenChildIsNotOnWishList()
+    public class Failures
     {
-        var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        private readonly Factory _factory = new();
+        private readonly Inventory _inventory = new();
 
-        sleigh.ContainsKey(_john).Should().BeFalse();
-    }
+        private readonly Child _john = new("John");
+        private readonly ManufacturedGift _manufacturedGift = new(BarCode);
+        private readonly Business _sut;
+        private readonly Gift _toy = new("Toy");
+        private readonly WishList _wishList = new();
 
-    [Fact]
-    public void Gift_ShouldNotBeLoaded_GivenToyWasNotManufactured()
-    {
-        _wishList.Add(_john, _toy);
-        var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+        public Failures()
+        {
+            _sut = new Business(_factory, _inventory, _wishList);
+        }
 
-        sleigh.ContainsKey(_john).Should().BeFalse();
-    }
+        [Fact]
+        public void Gift_ShouldNotBeLoaded_GivenChildIsNotOnWishList()
+        {
+            var sleigh = _sut.LoadGiftsInSleigh(_john);
 
-    [Fact]
-    public void Gift_ShouldNotBeLoaded_GivenToyWasMisplaced()
-    {
-        _wishList.Add(_john, _toy);
-        _factory.Add(_toy, _manufacturedGift);
-        var sut = new Business(_factory, _inventory, _wishList);
-        var sleigh = sut.LoadGiftsInSleigh(_john);
+            sleigh.GetGiftFor(_john)
+                .Should()
+                .Be(SleighMessages.ChildNotNiceThisYearMessage);
+        }
 
-        sleigh.ContainsKey(_john).Should().BeFalse();
+        [Fact]
+        public void Gift_ShouldNotBeLoaded_GivenToyWasNotManufactured()
+        {
+            _wishList.Add(_john, _toy);
+
+            var sleigh = _sut.LoadGiftsInSleigh(_john);
+
+            sleigh.GetGiftFor(_john)
+                .Should()
+                .Be(SleighMessages.GiftNotManufacturedMessage);
+        }
+
+        [Fact]
+        public void Gift_ShouldNotBeLoaded_GivenToyWasMisplaced()
+        {
+            _wishList.Add(_john, _toy);
+            _factory.Add(_toy, _manufacturedGift);
+
+            var sleigh = _sut.LoadGiftsInSleigh(_john);
+
+            sleigh.GetGiftFor(_john)
+                .Should()
+                .Be(SleighMessages.GiftMisplacedByElvesMessage);
+        }
     }
 }
