@@ -23,4 +23,8 @@
         <ProjectReference Include="..\TaskAssignmentSystem\TaskAssignmentSystem.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="StrykerOutput\" />
+    </ItemGroup>
+
 </Project>
