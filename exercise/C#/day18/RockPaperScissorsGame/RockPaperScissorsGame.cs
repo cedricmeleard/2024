@@ -4,7 +4,9 @@ namespace RockPaperScissorsGame
     {
         Rock,
         Paper,
-        Scissors
+        Scissors,
+        Spock,
+        Lizard
     }
 
     public enum Winner

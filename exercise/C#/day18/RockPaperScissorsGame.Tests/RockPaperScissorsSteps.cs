@@ -37,9 +37,10 @@ namespace RockPaperScissorsGame.Tests
                 "🪨" => Choice.Rock,
                 "📄" => Choice.Paper,
                 "✂️" => Choice.Scissors,
+                "\ud83d\udd96" => Choice.Spock,
+                "\ud83e\udd8e" => Choice.Lizard,
                 _ => throw new ArgumentException("Invalid choice")
             };
-
         private static Winner ParseWinner(string winner)
             => winner switch
             {

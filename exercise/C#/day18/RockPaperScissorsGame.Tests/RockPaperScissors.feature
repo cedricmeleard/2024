@@ -11,7 +11,7 @@ Feature: Rock Paper Scissors Game
         And Player 2 chooses 🪨
         When they play
         Then the result should be Player 1 because paper covers rock
-
+  
     Scenario: Player 2 wins with Scissors over Paper
         Given Player 1 chooses 📄
         And Player 2 chooses ✂️
@@ -35,3 +35,5 @@ Feature: Rock Paper Scissors Game
           | 🪨     |
           | ✂️     |
           | 📄     |
+          | 🖖     |
+          | 🦎     |
