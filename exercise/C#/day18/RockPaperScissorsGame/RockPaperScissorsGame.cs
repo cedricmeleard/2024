@@ -22,53 +22,36 @@ namespace RockPaperScissorsGame
     {
         public static Result? Play(Choice player1, Choice player2)
         {
-            if (player1 == player2)
+            return VerifyPlayerWin(player1, player2, Winner.Player1) 
+                   ?? VerifyPlayerWin(player2, player1, Winner.Player2);
+        }
+
+        private static Result? VerifyPlayerWin(Choice shouldWin, Choice mightLoose, Winner winner)
+        {
+            if (shouldWin == mightLoose)
                 return new Result(Winner.Draw, "same choice");
-            else if (player1 == Choice.Rock && player2 == Choice.Scissors)
-                return new Result(Winner.Player1, "rock crushes scissors");
-            else if (player1 == Choice.Rock && player2 == Choice.Lizard)
-                return new Result(Winner.Player1, "rock crushes lizard");
-            else if (player1 == Choice.Paper && player2 == Choice.Rock)
-                return new Result(Winner.Player1, "paper covers rock");
-            else if (player1 == Choice.Paper && player2 == Choice.Spock)
-                return new Result(Winner.Player1, "paper disproves spock");
-            else if (player1 == Choice.Scissors && player2 == Choice.Paper)
-                return new Result(Winner.Player1, "scissors cuts paper");
-            else if (player1 == Choice.Scissors && player2 == Choice.Lizard)
-                return new Result(Winner.Player1, "scissors decapitates lizard");
-            else if (player1 == Choice.Lizard && player2 == Choice.Spock)
-                return new Result(Winner.Player1, "lizard poisons spock");
-            else if (player1 == Choice.Lizard && player2 == Choice.Paper)
-                return new Result(Winner.Player1, "lizard eats paper");
-            else if (player1 == Choice.Spock && player2 == Choice.Rock)
-                return new Result(Winner.Player1, "spock vaporizes rock");
-            else if (player1 == Choice.Spock && player2 == Choice.Scissors)
-                return new Result(Winner.Player1, "spock smashes scissors");
-            
-            else if (player2 == Choice.Rock && player1 == Choice.Scissors)
-                return new Result(Winner.Player2, "rock crushes scissors");
-            else if (player2 == Choice.Rock && player1 == Choice.Lizard)
-                return new Result(Winner.Player2, "rock crushes lizard");
-            else if (player2 == Choice.Paper && player1 == Choice.Rock)
-                return new Result(Winner.Player2, "paper covers rock");
-            else if (player2 == Choice.Paper && player1 == Choice.Spock)
-                return new Result(Winner.Player2, "paper disproves spock");
-            else if(player2 == Choice.Scissors && player1 == Choice.Paper)
-                return new Result(Winner.Player2, "scissors cuts paper");
-            else if (player2 == Choice.Scissors && player1 == Choice.Lizard)
-                return new Result(Winner.Player2, "scissors decapitates lizard");
-            else if (player2 == Choice.Lizard && player1 == Choice.Spock)
-                return new Result(Winner.Player2, "lizard poisons spock");
-            else if (player2 == Choice.Lizard && player1 == Choice.Paper)
-                return new Result(Winner.Player2, "lizard eats paper");
-            else if (player2 == Choice.Spock && player1 == Choice.Rock)
-                return new Result(Winner.Player2, "spock vaporizes rock");
-            else if (player2 == Choice.Spock && player1 == Choice.Scissors)
-                return new Result(Winner.Player2, "spock smashes scissors");
-            
-            else
-                return null;
-                
+            else if (shouldWin == Choice.Rock && mightLoose == Choice.Scissors)
+                return new Result(winner, "rock crushes scissors");
+            else if (shouldWin == Choice.Rock && mightLoose == Choice.Lizard)
+                return new Result(winner, "rock crushes lizard");
+            else if (shouldWin == Choice.Paper && mightLoose == Choice.Rock)
+                return new Result(winner, "paper covers rock");
+            else if (shouldWin == Choice.Paper && mightLoose == Choice.Spock)
+                return new Result(winner, "paper disproves spock");
+            else if (shouldWin == Choice.Scissors && mightLoose == Choice.Paper)
+                return new Result(winner, "scissors cuts paper");
+            else if (shouldWin == Choice.Scissors && mightLoose == Choice.Lizard)
+                return new Result(winner, "scissors decapitates lizard");
+            else if (shouldWin == Choice.Lizard && mightLoose == Choice.Spock)
+                return new Result(winner, "lizard poisons spock");
+            else if (shouldWin == Choice.Lizard && mightLoose == Choice.Paper)
+                return new Result(winner, "lizard eats paper");
+            else if (shouldWin == Choice.Spock && mightLoose == Choice.Rock)
+                return new Result(winner, "spock vaporizes rock");
+            else if (shouldWin == Choice.Spock && mightLoose == Choice.Scissors)
+                return new Result(winner, "spock smashes scissors");
+
+            return null;
         }
     }
 }
