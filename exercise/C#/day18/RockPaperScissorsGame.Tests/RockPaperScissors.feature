@@ -54,18 +54,54 @@ Feature: Rock Paper Scissors Game
         When they play
         Then the result should be Player 1 because spock smashes scissors
     
-    Scenario: Player 2 wins with Scissors over Paper
-        Given Player 1 chooses 📄
-        And Player 2 chooses ✂️
-        When they play
-        Then the result should be Player 2 because scissors cuts paper
-
-    Scenario: Player 2 wins with Rock over Scissors
-        Given Player 1 chooses ✂️
+   Scenario: Player 2 wins with Rock over Lizard
+        Given Player 1 chooses 🦎
         And Player 2 chooses 🪨
         When they play
-        Then the result should be Player 2 because rock crushes scissors
+        Then the result should be Player 2 because rock crushes lizard
 
+    Scenario: Player 2 wins with Scissors over Lizard
+        Given Player 1 chooses 🦎
+        And Player 2 chooses ✂️
+        When they play
+        Then the result should be Player 2 because scissors decapitates lizard
+
+    Scenario: Player 2 wins with Spock over Scissors
+        Given Player 1 chooses ✂️
+        And Player 2 chooses 🖖
+        When they play
+        Then the result should be Player 2 because spock smashes scissors
+
+    Scenario: Player 2 wins with Lizard over Paper
+        Given Player 1 chooses 📄
+        And Player 2 chooses 🦎
+        When they play
+        Then the result should be Player 2 because lizard eats paper
+
+    Scenario: Player 2 wins with Lizard over Spock
+        Given Player 1 chooses 🖖
+        And Player 2 chooses 🦎
+        When they play
+        Then the result should be Player 2 because lizard poisons spock
+
+    Scenario: Player 2 wins with Paper over Rock
+        Given Player 1 chooses 🪨
+        And Player 2 chooses 📄
+        When they play
+        Then the result should be Player 2 because paper covers rock
+
+    Scenario: Player 2 wins with Paper over Spock
+        Given Player 1 chooses 🖖
+        And Player 2 chooses 📄
+        When they play
+        Then the result should be Player 2 because paper disproves spock
+
+    Scenario: Player 2 wins with Spock over Rock
+        Given Player 1 chooses 🪨
+        And Player 2 chooses 🖖
+        When they play
+        Then the result should be Player 2 because spock vaporizes rock
+   
     Scenario Outline: Draw
         Given Player 1 chooses <choice>
         And Player 2 chooses <choice>
