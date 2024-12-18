@@ -24,11 +24,17 @@ Feature: Rock Paper Scissors Game
         When they play
         Then the result should be Player 2 because rock crushes scissors
     
-    Scenario: Player 1 wins with Lezard over Spock
+    Scenario: Player 1 wins with Lizard over Spock
         Given Player 1 chooses 🦎
         And Player 2 chooses 🖖
         When they play
         Then the result should be Player 1 because lizard poisons spock
+
+    Scenario: Player 1 wins with Spock over rock 
+        Given Player 1 chooses 🖖
+        And Player 2 chooses 🪨
+        When they play
+        Then the result should be Player 1 because spock vaporizes rock
 
     Scenario Outline: Draw
         Given Player 1 chooses <choice>

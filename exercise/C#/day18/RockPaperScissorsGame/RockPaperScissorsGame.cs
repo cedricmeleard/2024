@@ -38,6 +38,8 @@ namespace RockPaperScissorsGame
                 return new Result(Winner.Player2, "scissors cuts paper");
             else if (player1 == Choice.Lizard && player2 == Choice.Spock)
                 return new Result(Winner.Player1, "lizard poisons spock");
+            else if (player1 == Choice.Spock && player2 == Choice.Rock)
+                return new Result(Winner.Player1, "spock vaporizes rock");
             else
                 return null;
                 
