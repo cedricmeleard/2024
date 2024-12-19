@@ -34,5 +34,28 @@ namespace Travel.Tests
                         .BeInRange(1, ulong.MaxValue)
             );
         }
+        
+        [Property]
+        public void Should_Not_Calculate_The_DistanceFor_Any_Negative_Number_Of_Reindeers(NegativeInt numberOfReindeers)
+        {
+            var act = () => CalculateTotalDistance(numberOfReindeers.Get);
+            act
+                .Should()
+                .Throw<ArgumentException>()
+                .WithMessage("The number of reindeers must be greater than 0 (Parameter 'numberOfReindeers')");
+        }
+        
+        [Property]
+        public Property Should_Not_Calculate_The_DistanceFor_Any_Number_Of_Reindeers_GreaterThan63()
+            => Prop.ForAll(
+                Gen.Choose(64, int.MaxValue).ToArbitrary(),
+                numberOfReindeers =>
+                {
+                    var act = () => CalculateTotalDistance(numberOfReindeers);
+                    act
+                        .Should()
+                        .Throw<ArgumentException>()
+                        .WithMessage("The number of reindeers must be less than or equal to 63 (Parameter 'numberOfReindeers')");
+                });
     }
 }
