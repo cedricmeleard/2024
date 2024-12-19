@@ -19,7 +19,7 @@ namespace Travel.Tests
         [InlineData(50, 1125899906842623)]
         [InlineData(63, 9223372036854775808)]
         public void Should_Calculate_The_DistanceFor(int numberOfReindeers, ulong expectedDistance)
-            => CalculateTotalDistanceRecursively(numberOfReindeers)
+            => CalculateTotalDistance(numberOfReindeers)
                 .Should()
                 .Be(expectedDistance);
         
@@ -29,7 +29,7 @@ namespace Travel.Tests
             return Prop.ForAll(
                 Gen.Choose(1, 63).ToArbitrary(),
                 numberOfReindeers
-                    => CalculateTotalDistanceRecursively(numberOfReindeers)
+                    => CalculateTotalDistance(numberOfReindeers)
                         .Should()
                         .BeInRange(1, ulong.MaxValue)
             );
