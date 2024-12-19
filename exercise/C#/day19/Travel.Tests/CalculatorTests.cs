@@ -1,4 +1,6 @@
 using FluentAssertions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static Travel.SantaTravelCalculator;
 
@@ -15,10 +17,22 @@ namespace Travel.Tests
         [InlineData(30, 1073741823)]
         [InlineData(32, 4294967295)]
         [InlineData(50, 1125899906842623)]
-        public void Should_Calculate_The_DistanceFor(int numberOfReindeers, long expectedDistance)
+        [InlineData(63, 9223372036854775808)]
+        public void Should_Calculate_The_DistanceFor(int numberOfReindeers, ulong expectedDistance)
             => CalculateTotalDistanceRecursively(numberOfReindeers)
                 .Should()
                 .Be(expectedDistance);
-
+        
+        [Property]
+        public Property Should_Calculate_The_DistanceFor_Any_Number_Of_Reindeers()
+        {
+            return Prop.ForAll(
+                Gen.Choose(1, 63).ToArbitrary(),
+                numberOfReindeers
+                    => CalculateTotalDistanceRecursively(numberOfReindeers)
+                        .Should()
+                        .BeInRange(1, ulong.MaxValue)
+            );
+        }
     }
 }
