@@ -7,7 +7,8 @@ public static class SantaTravelCalculator
         if (numberOfReindeers == 1) return 1;
         checked
         {
-            return 2 * CalculateTotalDistanceRecursively(numberOfReindeers - 1) + 1;
+            return (int)Math
+                .Pow(2, numberOfReindeers) - 1;
         }
     }
 }
