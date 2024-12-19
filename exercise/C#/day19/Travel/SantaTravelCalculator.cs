@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 
 namespace Travel
 {
