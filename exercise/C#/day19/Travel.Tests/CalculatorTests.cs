@@ -13,19 +13,12 @@ namespace Travel.Tests
         [InlineData(10, 1023)]
         [InlineData(20, 1048575)]
         [InlineData(30, 1073741823)]
-        public void Should_Calculate_The_DistanceFor(int numberOfReindeers, int expectedDistance)
+        [InlineData(32, 4294967295)]
+        [InlineData(50, 1125899906842623)]
+        public void Should_Calculate_The_DistanceFor(int numberOfReindeers, long expectedDistance)
             => CalculateTotalDistanceRecursively(numberOfReindeers)
                 .Should()
                 .Be(expectedDistance);
 
-        [Theory]
-        [InlineData(32)]
-        [InlineData(50)]
-        public void Fail_For_Numbers_Greater_Than_32(int numberOfReindeers)
-            // TODO find a way to support those values greater than 32
-            // I expect a distance of 1 125 899 906 842 623 for 50 reindeers 
-            => ((Func<int>?) (() => CalculateTotalDistanceRecursively(numberOfReindeers)))
-                .Should()
-                .Throw<OverflowException>();
     }
 }
