@@ -25,4 +25,10 @@
       <ProjectReference Include="..\Reindeer.Web\Reindeer.Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="ReindeerContractTests.ShouldGetReindeer.verified.txt">
+        <DependentUpon>ReindeerContractTests.cs</DependentUpon>
+      </None>
+    </ItemGroup>
+
 </Project>
