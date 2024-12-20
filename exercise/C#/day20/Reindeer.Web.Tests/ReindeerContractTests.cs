@@ -39,5 +39,23 @@ namespace Reindeer.Web.Tests
 
             response.StatusCode.Should().Be(HttpStatusCode.Conflict);
         }
+        
+        [Fact]
+        public async Task ShouldCreateReindeer()
+        {
+            var request = new ReindeerToCreateRequest("Dasher", ReindeerColor.White);
+            var response = await _client.PostAsync("reindeer", JsonContent.Create(request));
+
+            await Verify(response);
+        }
+        
+        [Fact]
+        public async Task ErrorWhenCreatingReindeerWithoutDatas()
+        {
+            var response = await _client.PostAsync("reindeer", null);
+
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+        
     }
 }
