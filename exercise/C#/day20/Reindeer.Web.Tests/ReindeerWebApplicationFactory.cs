@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Reindeer.Web.Tests
+namespace Reindeer.Web.Tests;
+
+public class ReindeerWebApplicationFactory : WebApplicationFactory<Program>
 {
-    public class ReindeerWebApplicationFactory : WebApplicationFactory<Program>
-    {
-    }
 }
