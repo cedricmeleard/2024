@@ -10,9 +10,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
         <PackageReference Include="FluentAssertions" Version="6.12.1" />
         <PackageReference Include="FsCheck.Xunit" Version="2.16.6" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+        <PackageReference Include="Verify.Xunit" Version="28.6.1" />
         <PackageReference Include="xunit" Version="2.9.2" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +24,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Travel\Travel.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="CalculatorTests.Verify_Calculate_The_DistanceFor_Reindeers_Recursively.verified.txt">
+        <DependentUpon>CalculatorTests.cs</DependentUpon>
+      </None>
     </ItemGroup>
 
 </Project>
