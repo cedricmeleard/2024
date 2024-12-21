@@ -17,7 +17,6 @@ class NewTourCalculator(private var steps: List<Step>) {
             return "No locations !!!".left()
         }
 
-
         val result = StringBuilder()
 
         steps.sortedBy { it.time }.forEach { s ->
@@ -38,8 +37,10 @@ class NewTourCalculator(private var steps: List<Step>) {
         return result.toString().right()
     }
 
-    private fun formatDurationToHHMMSS(duration: Duration): String =
-        "${duration.toHours()}%02d:${duration.toMinutesPart()}%02d:${duration.toSecondsPart()}%02d"
+    private fun formatDurationToHHMMSS(duration: Duration): String {
+        return "${duration.toHours()}%02d:${duration.toMinutesPart()}%02d:${duration.toSecondsPart()}%02d"
+    }
+
 
     private fun fLine(step: Step?, x: Double): String {
         if (step != null) {
