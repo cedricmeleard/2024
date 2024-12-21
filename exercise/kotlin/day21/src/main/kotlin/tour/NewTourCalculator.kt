@@ -26,18 +26,17 @@ class NewTourCalculator(private var steps: List<Step>) {
             }
         }
 
-        val str: String = formatDurationToHHMMSS(
-            Duration.ofSeconds(
-                deliveryTime.toLong()
-            )
-        )
+        val str: String = formatDurationToHHMMSS(deliveryTime)
         result.appendLine("Delivery time | $str")
         calculated = true
 
         return result.toString().right()
     }
 
-    private fun formatDurationToHHMMSS(duration: Duration): String {
+    private fun formatDurationToHHMMSS(deliveryTime: Double): String {
+        val duration = Duration.ofSeconds(
+            deliveryTime.toLong()
+        )
         return "${duration.toHours()}%02d:${duration.toMinutesPart()}%02d:${duration.toSecondsPart()}%02d"
     }
 
