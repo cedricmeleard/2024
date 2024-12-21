@@ -15,26 +15,27 @@ class NewTourCalculator(private var steps: List<Step>) {
     fun calculate(): Either<String, String> {
         if (steps.isEmpty()) {
             return "No locations !!!".left()
-        } else {
-            val result = StringBuilder()
-
-            steps.sortedBy { it.time }.forEach { s ->
-                if (!calculated) {
-                    this.deliveryTime += s.deliveryTime
-                    result.appendLine(fLine(s, deliveryTime))
-                }
-            }
-
-            val str: String = formatDurationToHHMMSS(
-                Duration.ofSeconds(
-                    deliveryTime.toLong()
-                )
-            )
-            result.appendLine("Delivery time | $str")
-            calculated = true
-
-            return result.toString().right()
         }
+
+
+        val result = StringBuilder()
+
+        steps.sortedBy { it.time }.forEach { s ->
+            if (!calculated) {
+                this.deliveryTime += s.deliveryTime
+                result.appendLine(fLine(s, deliveryTime))
+            }
+        }
+
+        val str: String = formatDurationToHHMMSS(
+            Duration.ofSeconds(
+                deliveryTime.toLong()
+            )
+        )
+        result.appendLine("Delivery time | $str")
+        calculated = true
+
+        return result.toString().right()
     }
 
     private fun formatDurationToHHMMSS(duration: Duration): String =
