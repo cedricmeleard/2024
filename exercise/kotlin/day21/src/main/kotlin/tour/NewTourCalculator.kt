@@ -11,7 +11,7 @@ data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
 class NewTourCalculator(private var steps: List<Step>) {
     private var calculated: Boolean = false
     private var totalDeliveryTime: Double = 0.0
-    private val sortedSteps = steps.sortedBy { it.time }
+    private val sortedSteps = steps.filter { it != null }.sortedBy { it.time }
 
     fun calculate(): Either<String, String> {
         if (steps.isEmpty()) {
@@ -44,14 +44,6 @@ class NewTourCalculator(private var steps: List<Step>) {
     }
 
 
-    private fun fLine(step: Step?): String {
-        if (step == null) {
-            throw IllegalStateException()
-        }
-
-        return step.let {
-            "${it.time} : ${it.label} | ${it.deliveryTime} sec"
-        }
-    }
+    private fun fLine(step: Step): String = step.let { "${it.time} : ${it.label} | ${it.deliveryTime} sec" }
 
 }
