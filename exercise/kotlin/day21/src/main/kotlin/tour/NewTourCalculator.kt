@@ -46,6 +46,7 @@ class NewTourCalculator(private var steps: List<Step>) {
             return step?.let {
                 "${it.time} : ${it.label} | ${it.deliveryTime} sec"
             } ?: throw IllegalStateException()
-        } else throw IllegalStateException()
+        }
+        throw IllegalStateException()
     }
 }
