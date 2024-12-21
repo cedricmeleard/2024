@@ -20,21 +20,17 @@ class NewTourCalculator(private var steps: List<Step>) {
         sortedByTimeSteps.forEach { step ->
             result.appendLine(fLine(step))
         }
-
-
-        val str: String = formatDurationToHHMMSS(sortedByTimeSteps.sumOf { it.deliveryTime.toDouble() })
+        
+        val str: String = formatDurationToHHMMSS(sortedByTimeSteps.sumOf { it.deliveryTime }.toLong())
         result.appendLine("Delivery time | $str")
 
         return result.toString().right()
     }
 
-    private fun formatDurationToHHMMSS(deliveryTime: Double): String {
-        val duration = Duration.ofSeconds(
-            deliveryTime.toLong()
-        )
+    private fun formatDurationToHHMMSS(deliveryTime: Long): String {
+        val duration = Duration.ofSeconds(deliveryTime)
         return "${duration.toHours()}%02d:${duration.toMinutesPart()}%02d:${duration.toSecondsPart()}%02d"
     }
-
 
     private fun fLine(step: Step): String = step.let { "${it.time} : ${it.label} | ${it.deliveryTime} sec" }
 
