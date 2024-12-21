@@ -19,10 +19,10 @@ class NewTourCalculator(private var steps: List<Step>) {
 
         val result = StringBuilder()
 
-        steps.sortedBy { it.time }.forEach { s ->
+        steps.sortedBy { it.time }.forEach { step ->
             if (!calculated) {
-                this.deliveryTime += s.deliveryTime
-                result.appendLine(fLine(s))
+                this.deliveryTime += step.deliveryTime
+                result.appendLine(fLine(step))
             }
         }
 
