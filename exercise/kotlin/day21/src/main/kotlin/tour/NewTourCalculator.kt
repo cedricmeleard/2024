@@ -9,7 +9,6 @@ import java.time.LocalTime
 data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
 
 class NewTourCalculator(private var steps: List<Step>) {
-    private var calculated: Boolean = false
     private var totalDeliveryTime: Double = 0.0
     private val sortedByTimeSteps = steps.filter { true }.sortedBy { it.time }
 
@@ -20,19 +19,14 @@ class NewTourCalculator(private var steps: List<Step>) {
 
         val result = StringBuilder()
 
-
-
         sortedByTimeSteps.forEach { step ->
             result.appendLine(fLine(step))
         }
-
-
 
         this.totalDeliveryTime = sortedByTimeSteps.sumOf { it.deliveryTime.toDouble() }
 
         val str: String = formatDurationToHHMMSS(totalDeliveryTime)
         result.appendLine("Delivery time | $str")
-        calculated = true
 
         return result.toString().right()
     }
