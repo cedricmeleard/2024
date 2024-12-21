@@ -11,7 +11,7 @@ data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
 class NewTourCalculator(private var steps: List<Step>) {
     private var calculated: Boolean = false
     private var totalDeliveryTime: Double = 0.0
-    private val sortedSteps = steps.filter { true }.sortedBy { it.time }
+    private val sortedByTimeSteps = steps.filter { true }.sortedBy { it.time }
 
     fun calculate(): Either<String, String> {
         if (steps.isEmpty()) {
@@ -22,12 +22,13 @@ class NewTourCalculator(private var steps: List<Step>) {
 
         if (!calculated) {
 
-            sortedSteps.forEach { step ->
-                this.totalDeliveryTime += step.deliveryTime
+            sortedByTimeSteps.forEach { step ->
                 result.appendLine(fLine(step))
             }
 
         }
+
+        this.totalDeliveryTime = sortedByTimeSteps.sumOf { it.deliveryTime.toDouble() }
 
         val str: String = formatDurationToHHMMSS(totalDeliveryTime)
         result.appendLine("Delivery time | $str")
