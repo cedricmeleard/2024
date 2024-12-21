@@ -11,7 +11,7 @@ data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
 class NewTourCalculator(private var steps: List<Step>) {
     private var calculated: Boolean = false
     private var totalDeliveryTime: Double = 0.0
-    private val sortedSteps = steps.filter { it != null }.sortedBy { it.time }
+    private val sortedSteps = steps.filter { true }.sortedBy { it.time }
 
     fun calculate(): Either<String, String> {
         if (steps.isEmpty()) {
