@@ -15,6 +15,7 @@ class NewTourCalculator(private var steps: List<Step>) {
 
     private fun calculateSteps(steps: List<Step>): String {
         val result = StringBuilder()
+
         steps.forEach { step -> result.appendLine(fLine(step)) }
 
         val str: String = formatDurationToHHMMSS(steps.sumOf { it.deliveryTime }.toLong())
