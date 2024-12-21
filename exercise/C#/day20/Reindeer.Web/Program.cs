@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Reindeer.Web.Extensions;
 using Reindeer.Web.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,9 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.ConfigureSwagger();
 
 builder.Services.AddSingleton<ReindeerService>(_ => new ReindeerService());
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 var app = builder.Build();
 
@@ -18,6 +24,8 @@ if (app.Environment.IsDevelopment())
         .UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ReindeerApiKeyMiddleware>();
 
 app.MapPost("/reindeer", ([FromBody] ReindeerToCreateRequest request, ReindeerService service)
         => service.Create(request.ToDomain())

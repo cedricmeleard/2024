@@ -1,8 +1,7 @@
-namespace Reindeer.Web.Service
+namespace Reindeer.Web.Service;
+
+public enum ReindeerErrorCode
 {
-    public enum ReindeerErrorCode
-    {
-        NotFound,
-        AlreadyExist
-    }
+    NotFound,
+    AlreadyExist
 }
