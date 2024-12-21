@@ -19,13 +19,12 @@ class NewTourCalculator(private var steps: List<Step>) {
 
         val result = StringBuilder()
 
-        steps.sortedBy { it.time }.forEach { step ->
-            if (!calculated) {
+        if (!calculated) {
+            steps.sortedBy { it.time }.forEach { step ->
                 this.deliveryTime += step.deliveryTime
                 result.appendLine(fLine(step))
             }
         }
-
         val str: String = formatDurationToHHMMSS(deliveryTime)
         result.appendLine("Delivery time | $str")
         calculated = true
