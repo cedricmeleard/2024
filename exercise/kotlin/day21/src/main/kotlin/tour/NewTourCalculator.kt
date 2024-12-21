@@ -23,9 +23,9 @@ class NewTourCalculator(private var steps: List<Step>) {
             result.appendLine(fLine(step))
         }
 
-        this.totalDeliveryTime = sortedByTimeSteps.sumOf { it.deliveryTime.toDouble() }
+        this.totalDeliveryTime = 0.0;
 
-        val str: String = formatDurationToHHMMSS(totalDeliveryTime)
+        val str: String = formatDurationToHHMMSS(sortedByTimeSteps.sumOf { it.deliveryTime.toDouble() })
         result.appendLine("Delivery time | $str")
 
         return result.toString().right()
