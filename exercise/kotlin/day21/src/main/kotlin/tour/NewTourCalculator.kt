@@ -9,9 +9,8 @@ import java.time.LocalTime
 data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
 
 class NewTourCalculator(private var steps: List<Step>) {
-    private val sortedByTimeSteps = steps.filter { true }.sortedBy { it.time }
     fun calculate(): Either<String, String> = if (steps.isNotEmpty()) {
-        calculateSteps(sortedByTimeSteps).right()
+        calculateSteps(steps.toSortedSteps()).right()
     } else "No locations !!!".left()
 
     private fun calculateSteps(steps: List<Step>): String {
@@ -30,4 +29,5 @@ class NewTourCalculator(private var steps: List<Step>) {
     }
 
     private fun fLine(step: Step): String = step.let { "${it.time} : ${it.label} | ${it.deliveryTime} sec" }
+    private fun List<Step>.toSortedSteps(): List<Step> = this.filter { true }.sortedBy { it.time }
 }
