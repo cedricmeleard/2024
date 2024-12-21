@@ -41,11 +41,12 @@ class NewTourCalculator(private var steps: List<Step>) {
 
 
     private fun fLine(step: Step?): String {
-        if (step != null) {
-            return step?.let {
-                "${it.time} : ${it.label} | ${it.deliveryTime} sec"
-            } ?: throw IllegalStateException()
+        if (step == null) {
+            throw IllegalStateException()
         }
-        throw IllegalStateException()
+        
+        return step?.let {
+            "${it.time} : ${it.label} | ${it.deliveryTime} sec"
+        } ?: throw IllegalStateException()
     }
 }
