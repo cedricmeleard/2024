@@ -20,13 +20,13 @@ class NewTourCalculator(private var steps: List<Step>) {
 
         val result = StringBuilder()
 
-        if (!calculated) {
 
-            sortedByTimeSteps.forEach { step ->
-                result.appendLine(fLine(step))
-            }
 
+        sortedByTimeSteps.forEach { step ->
+            result.appendLine(fLine(step))
         }
+
+
 
         this.totalDeliveryTime = sortedByTimeSteps.sumOf { it.deliveryTime.toDouble() }
 
