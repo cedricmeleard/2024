@@ -10,21 +10,18 @@ data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
 
 class NewTourCalculator(private var steps: List<Step>) {
     private val sortedByTimeSteps = steps.filter { true }.sortedBy { it.time }
-    fun calculate(): Either<String, String> {
-        if (steps.isEmpty()) {
-            return "No locations !!!".left()
-        }
+    fun calculate(): Either<String, String> = if (steps.isNotEmpty()) {
+        calculateSteps(sortedByTimeSteps).right()
+    } else "No locations !!!".left()
 
+    private fun calculateSteps(steps: List<Step>): String {
         val result = StringBuilder()
+        steps.forEach { step -> result.appendLine(fLine(step)) }
 
-        sortedByTimeSteps.forEach { step ->
-            result.appendLine(fLine(step))
-        }
-        
-        val str: String = formatDurationToHHMMSS(sortedByTimeSteps.sumOf { it.deliveryTime }.toLong())
+        val str: String = formatDurationToHHMMSS(steps.sumOf { it.deliveryTime }.toLong())
         result.appendLine("Delivery time | $str")
 
-        return result.toString().right()
+        return result.toString()
     }
 
     private fun formatDurationToHHMMSS(deliveryTime: Long): String {
@@ -33,5 +30,4 @@ class NewTourCalculator(private var steps: List<Step>) {
     }
 
     private fun fLine(step: Step): String = step.let { "${it.time} : ${it.label} | ${it.deliveryTime} sec" }
-
 }
