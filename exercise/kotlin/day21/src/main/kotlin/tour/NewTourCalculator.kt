@@ -22,7 +22,7 @@ class NewTourCalculator(private var steps: List<Step>) {
         steps.sortedBy { it.time }.forEach { s ->
             if (!calculated) {
                 this.deliveryTime += s.deliveryTime
-                result.appendLine(fLine(s, deliveryTime))
+                result.appendLine(fLine(s))
             }
         }
 
@@ -41,7 +41,7 @@ class NewTourCalculator(private var steps: List<Step>) {
     }
 
 
-    private fun fLine(step: Step?, x: Double): String {
+    private fun fLine(step: Step?): String {
         if (step != null) {
             return step?.let {
                 "${it.time} : ${it.label} | ${it.deliveryTime} sec"
