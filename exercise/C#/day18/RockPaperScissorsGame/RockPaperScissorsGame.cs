@@ -26,27 +26,40 @@ namespace RockPaperScissorsGame
             => VerifyPlayerWin(player1, player2, Winner.Player1)
                 .Bind(_ => VerifyPlayerWin(player2, player1, Winner.Player2))
                 .Match(
-                    draw => new Result(Winner.Draw, "same choice"),
+                    _ => throw new IncertainResultException(),
                     win => new Result(win.Winner, win.Reason)
                 );
 
-        private static Either<AGameWin, AGameDraw> VerifyPlayerWin(Choice shouldWin, Choice mightLoose, Winner winner)
-            => shouldWin switch
+        private static Either<IEndGame, AnIncertainResultYet> VerifyPlayerWin(Choice shouldWin, Choice mightLoose, Winner winner)
+        {
+            if (shouldWin == mightLoose) return new ADraw(Winner.Draw, "same choice");
+            
+            return shouldWin switch
             {
-                Choice.Rock when mightLoose == Choice.Scissors => new AGameWin(winner, "rock crushes scissors"),
-                Choice.Rock when mightLoose == Choice.Lizard => new AGameWin(winner, "rock crushes lizard"),
-                Choice.Paper when mightLoose == Choice.Rock => new AGameWin(winner, "paper covers rock"),
-                Choice.Paper when mightLoose == Choice.Spock => new AGameWin(winner, "paper disproves spock"),
-                Choice.Scissors when mightLoose == Choice.Paper => new AGameWin(winner, "scissors cuts paper"),
-                Choice.Scissors when mightLoose == Choice.Lizard => new AGameWin(winner, "scissors decapitates lizard"),
-                Choice.Lizard when mightLoose == Choice.Spock => new AGameWin(winner, "lizard poisons spock"),
-                Choice.Lizard when mightLoose == Choice.Paper => new AGameWin(winner, "lizard eats paper"),
-                Choice.Spock when mightLoose == Choice.Rock => new AGameWin(winner, "spock vaporizes rock"),
-                Choice.Spock when mightLoose == Choice.Scissors => new AGameWin(winner, "spock smashes scissors"),
-                _ => new AGameDraw()
+                Choice.Rock when mightLoose == Choice.Scissors => new AWin(winner, "rock crushes scissors"),
+                Choice.Rock when mightLoose == Choice.Lizard => new AWin(winner, "rock crushes lizard"),
+                Choice.Paper when mightLoose == Choice.Rock => new AWin(winner, "paper covers rock"),
+                Choice.Paper when mightLoose == Choice.Spock => new AWin(winner, "paper disproves spock"),
+                Choice.Scissors when mightLoose == Choice.Paper => new AWin(winner, "scissors cuts paper"),
+                Choice.Scissors when mightLoose == Choice.Lizard => new AWin(winner, "scissors decapitates lizard"),
+                Choice.Lizard when mightLoose == Choice.Spock => new AWin(winner, "lizard poisons spock"),
+                Choice.Lizard when mightLoose == Choice.Paper => new AWin(winner, "lizard eats paper"),
+                Choice.Spock when mightLoose == Choice.Rock => new AWin(winner, "spock vaporizes rock"),
+                Choice.Spock when mightLoose == Choice.Scissors => new AWin(winner, "spock smashes scissors"),
+                _ => new AnIncertainResultYet()
             };
+        }
     }
+    
+    public record AnIncertainResultYet;
 
-    public record AGameDraw;
-    public record AGameWin(Winner Winner, string Reason);
+    public interface IEndGame
+    {
+        public Winner Winner { get; }
+        public string Reason { get; }
+    }
+    public record AWin(Winner Winner, string Reason) : IEndGame;
+    public record ADraw(Winner Winner, string Reason) : IEndGame;
+    
+    public class IncertainResultException() : Exception("Can't determine a Result");
 }
