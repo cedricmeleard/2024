@@ -32,7 +32,7 @@ namespace RockPaperScissorsGame
 
         private static Either<IEndGame, AnIncertainResultYet> VerifyPlayerWin(Choice shouldWin, Choice mightLoose, Winner winner)
         {
-            if (shouldWin == mightLoose) return new ADraw(Winner.Draw, "same choice");
+            if (shouldWin == mightLoose) return new ADraw();
             
             return shouldWin switch
             {
@@ -59,7 +59,12 @@ namespace RockPaperScissorsGame
         public string Reason { get; }
     }
     public record AWin(Winner Winner, string Reason) : IEndGame;
-    public record ADraw(Winner Winner, string Reason) : IEndGame;
+
+    public record ADraw : IEndGame
+    {
+        public Winner Winner => Winner.Draw;
+        public string Reason => "same choice";
+    };
     
     public class IncertainResultException() : Exception("Can't determine a Result");
 }
