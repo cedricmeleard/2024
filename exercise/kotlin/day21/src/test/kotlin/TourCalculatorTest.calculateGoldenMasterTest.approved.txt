@@ -1,0 +1,32 @@
+Either.Right(08:30 : Location 0 | 0 sec
+08:30 : Location 1 | 1560 sec
+08:30 : Location 2 | 3120 sec
+08:30 : Location 3 | 4680 sec
+08:30 : Location 4 | 6240 sec
+08:30 : Location 5 | 7800 sec
+08:30 : Location 6 | 9360 sec
+08:30 : Location 7 | 10920 sec
+08:30 : Location 8 | 12480 sec
+08:30 : Location 9 | 14040 sec
+08:30 : Location 10 | 15600 sec
+08:30 : Location 11 | 17160 sec
+08:30 : Location 12 | 18720 sec
+08:30 : Location 13 | 20280 sec
+08:30 : Location 14 | 21840 sec
+08:30 : Location 15 | 23400 sec
+08:30 : Location 16 | 24960 sec
+08:30 : Location 17 | 26520 sec
+08:30 : Location 18 | 28080 sec
+08:30 : Location 19 | 29640 sec
+08:30 : Location 20 | 31200 sec
+08:30 : Location 21 | 32760 sec
+08:30 : Location 22 | 34320 sec
+08:30 : Location 23 | 35880 sec
+08:30 : Location 24 | 37440 sec
+08:30 : Location 25 | 39000 sec
+08:30 : Location 26 | 40560 sec
+08:30 : Location 27 | 42120 sec
+08:30 : Location 28 | 43680 sec
+08:30 : Location 29 | 45240 sec
+Delivery time | 188%02d:30%02d:0%02d
+)
