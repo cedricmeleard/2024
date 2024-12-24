@@ -75,12 +75,8 @@ public class System
     }
 
     private bool HasEnoughMagicPower()
-    {
-        float controlMagicPower = _reindeerPowerUnits.Sum(r => r.CheckMagicPower());
+        => _reindeerPowerUnits.Sum(r => r.CheckMagicPower()) >= XmasSpirit;
 
-        return controlMagicPower >= XmasSpirit;
-    }
-    
     private void EnsureSleighIsStarted()
     {
         if (Status != SleighEngineStatus.On) throw new SleighNotStartedException();
