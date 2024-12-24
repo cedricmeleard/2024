@@ -76,16 +76,9 @@ public class System
 
     private bool HasEnoughMagicPower()
     {
-        float _controlMagicPower = 0;
+        float controlMagicPower = _reindeerPowerUnits.Sum(r => r.CheckMagicPower());
 
-        foreach (var reindeerPowerUnit in _reindeerPowerUnits)
-        {
-            _controlMagicPower += reindeerPowerUnit.HarnessMagicPower();
-        }
-        bool status = _controlMagicPower >= XmasSpirit;
-
-        _controlMagicPower = 0;
-        return status;
+        return controlMagicPower >= XmasSpirit;
     }
     
     private void EnsureSleighIsStarted()
