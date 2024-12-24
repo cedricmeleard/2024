@@ -6,7 +6,7 @@ public static class Program
 {
     static void Main(string[] args)
     {
-        var controlSystem = new ControlSystem.Core.System(new MagicStable());
+        var controlSystem = new ControlSystem.Core.System(new MagicStable(), new Dashboard());
         controlSystem.StartSystem();
 
         var keepRunning = true;

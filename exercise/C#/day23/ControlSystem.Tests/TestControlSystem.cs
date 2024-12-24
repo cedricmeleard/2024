@@ -17,7 +17,7 @@ public class TestControlSystem : IDisposable
         Console.SetOut(_output);
         
         var magicStable = new MagicStable();
-        _controlSystem = new Core.System(magicStable);
+        _controlSystem = new Core.System(magicStable, new Dashboard());
     }
 
     [Fact]

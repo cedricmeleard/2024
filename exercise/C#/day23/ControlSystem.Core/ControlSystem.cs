@@ -2,9 +2,8 @@ using ControlSystem.External;
 
 namespace ControlSystem.Core;
 
-public class System(MagicStable magicStable)
+public class System(MagicStable magicStable, Dashboard dashboard)
 {
-    private readonly Dashboard _dashboard = new();
     public SleighEngineStatus Status { get; set; }
     public SleighAction Action { get; set; }
     
@@ -12,16 +11,16 @@ public class System(MagicStable magicStable)
 
     public void StartSystem()
     {
-        _dashboard.DisplayStatus("Starting the sleigh...");
+        dashboard.DisplayStatus("Starting the sleigh...");
         Status = SleighEngineStatus.On;
-        _dashboard.DisplayStatus("System ready.");
+        dashboard.DisplayStatus("System ready.");
     }
     
     public void StopSystem()
     {
-        _dashboard.DisplayStatus("Stopping the sleigh...");
+        dashboard.DisplayStatus("Stopping the sleigh...");
         Status = SleighEngineStatus.Off;
-        _dashboard.DisplayStatus("System shutdown.");
+        dashboard.DisplayStatus("System shutdown.");
     }
     
     public void Ascend()
@@ -29,7 +28,7 @@ public class System(MagicStable magicStable)
         EnsureSleighIsStarted();
         if (!_reindeerPowerUnits.HasEnoughMagicPower()) throw new ReindeersNeedRestException();
         
-        _dashboard.DisplayStatus("Ascending...");
+        dashboard.DisplayStatus("Ascending...");
         Action = SleighAction.Flying;
     }
     
@@ -37,7 +36,7 @@ public class System(MagicStable magicStable)
     {
         EnsureSleighIsStarted();
         
-        _dashboard.DisplayStatus("Descending...");
+        dashboard.DisplayStatus("Descending...");
         
         Action = SleighAction.Hovering;
     }
@@ -46,7 +45,7 @@ public class System(MagicStable magicStable)
     {
         EnsureSleighIsStarted();
         
-        _dashboard.DisplayStatus("Parking...");
+        dashboard.DisplayStatus("Parking...");
         
         _reindeerPowerUnits.ResetHarnessing();
         
