@@ -26,7 +26,7 @@ public class System(MagicStable magicStable, Dashboard dashboard)
     public void Ascend()
     {
         EnsureSleighIsStarted();
-        if (!_reindeerPowerUnits.HasEnoughMagicPower()) throw new ReindeersNeedRestException();
+        EnsureSufficientMagicPower();
         
         dashboard.DisplayStatus("Ascending...");
         Action = SleighAction.Flying;
@@ -37,7 +37,6 @@ public class System(MagicStable magicStable, Dashboard dashboard)
         EnsureSleighIsStarted();
         
         dashboard.DisplayStatus("Descending...");
-        
         Action = SleighAction.Hovering;
     }
 
@@ -48,12 +47,16 @@ public class System(MagicStable magicStable, Dashboard dashboard)
         dashboard.DisplayStatus("Parking...");
         
         _reindeerPowerUnits.ResetHarnessing();
-        
         Action = SleighAction.Parked;
     }
 
     private void EnsureSleighIsStarted()
     {
         if (Status != SleighEngineStatus.On) throw new SleighNotStartedException();
+    }
+    
+    private void EnsureSufficientMagicPower()
+    {
+        if (!_reindeerPowerUnits.HasEnoughMagicPower()) throw new ReindeersNeedRestException();
     }
 }
