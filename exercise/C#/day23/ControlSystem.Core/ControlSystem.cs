@@ -1,36 +1,9 @@
-using System.Collections;
-using System.Net;
 using ControlSystem.External;
 
 namespace ControlSystem.Core;
 
-public class ReindeerPowerUnits
-{
-    public readonly List<ReindeerPowerUnit> _reindeerPowerUnits;
-
-    private ReindeerPowerUnits(List<ReindeerPowerUnit> reindeerPowerUnits)
-    {
-        _reindeerPowerUnits = reindeerPowerUnits;
-    }
-
-    public static ReindeerPowerUnits CreateInstance(MagicStable magicStable)
-    {
-        var  xmasTownAmplifiers = XmasTownAmplifiers.Build();
-        var reindeerPowerUnits = BringAllReindeers(magicStable, xmasTownAmplifiers);
-        return new ReindeerPowerUnits(reindeerPowerUnits);
-    }
-    
-    private static List<ReindeerPowerUnit> BringAllReindeers(MagicStable magicStable, XmasTownAmplifiers xmasTownAmplifiers) =>
-        magicStable
-            .GetAllReindeers()
-            .OrderByDescending(r => r.GetMagicPower())
-            .Select(reindeer => new ReindeerPowerUnit(reindeer,xmasTownAmplifiers.GetNext()))
-            .ToList();
-}
-
 public class System
 {
-    private const int XmasSpirit = 40;
     private readonly Dashboard _dashboard;
     
     public SleighEngineStatus Status { get; set; }
@@ -61,7 +34,7 @@ public class System
     public void Ascend()
     {
         EnsureSleighIsStarted();
-        if (!HasEnoughMagicPower()) throw new ReindeersNeedRestException();
+        if (!_reindeerPowerUnits.HasEnoughMagicPower(this)) throw new ReindeersNeedRestException();
         
         _dashboard.DisplayStatus("Ascending...");
         Action = SleighAction.Flying;
@@ -72,6 +45,7 @@ public class System
         EnsureSleighIsStarted();
         
         _dashboard.DisplayStatus("Descending...");
+        
         Action = SleighAction.Hovering;
     }
 
@@ -80,13 +54,11 @@ public class System
         EnsureSleighIsStarted();
         
         _dashboard.DisplayStatus("Parking...");
-        _reindeerPowerUnits._reindeerPowerUnits.ForEach(r => r.ResetHarnessing());
+        
+        _reindeerPowerUnits.ResetHarnessing();
         
         Action = SleighAction.Parked;
     }
-
-    private bool HasEnoughMagicPower()
-        => _reindeerPowerUnits._reindeerPowerUnits.Sum(r => r.CheckMagicPower()) >= XmasSpirit;
 
     private void EnsureSleighIsStarted()
     {
