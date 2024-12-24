@@ -1,10 +1,6 @@
-namespace ControlSystem.Core
+namespace ControlSystem.Core;
+
+public class Dashboard
 {
-    public class Dashboard
-    {
-        public void DisplayStatus(string message)
-        {
-            Console.WriteLine(message);
-        }
-    }
+    public void DisplayStatus(string message) => Console.WriteLine(message);
 }
