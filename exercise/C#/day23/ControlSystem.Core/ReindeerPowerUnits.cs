@@ -26,5 +26,5 @@ public class ReindeerPowerUnits
             .ToList();
 
     public void ResetHarnessing() => _powerUnits.ForEach(r => r.ResetHarnessing());
-    public bool HasEnoughMagicPower() => _powerUnits.Sum(r => r.CheckMagicPower()) >= XmasSpirit;
+    public bool HasEnoughMagicPower() => _powerUnits.Sum(r => r.HarnessMagicPower()) >= XmasSpirit;
 }

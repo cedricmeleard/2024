@@ -21,10 +21,5 @@ public class ReindeerPowerUnit
         return _amplifier.Amplify(_reindeer.GetMagicPower());
     }
 
-    public float CheckMagicPower()
-    {
-        return _reindeer.GetMagicPower();
-    }
-
     public void ResetHarnessing() => _reindeer.TimesHarnessing = 0;
 }
