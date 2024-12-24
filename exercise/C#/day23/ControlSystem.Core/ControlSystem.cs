@@ -68,7 +68,7 @@ public class System
 
         foreach (var reindeerPowerUnit in _reindeerPowerUnits)
         {
-            reindeerPowerUnit.Reindeer.TimesHarnessing = 0;
+            reindeerPowerUnit.ResetHarnessing();
         }
 
         Action = SleighAction.Parked;

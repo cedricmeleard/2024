@@ -17,7 +17,6 @@ public class TestControlSystem : IDisposable
         Console.SetOut(_output);
         
         var magicStable = new MagicStable();
-        // reset the reindeer as Healthy for test
         _controlSystem = new Core.System(magicStable);
     }
 
