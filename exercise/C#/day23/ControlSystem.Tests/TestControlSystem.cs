@@ -34,7 +34,7 @@ public class TestControlSystem : IDisposable
     {
         _controlSystem.StartSystem();
         _controlSystem.Invoking(cs => cs.Ascend()).Should().NotThrow<ReindeersNeedRestException>();
-        _controlSystem.Action.Should().Be(SleighAction.Flying);
+        _controlSystem.GetAction().Should().Be(SleighAction.Flying);
         _output.ToString().Trim().Should().Be($"Starting the sleigh...{Environment.NewLine}System ready.{Environment.NewLine}Ascending...");
     }
 
@@ -44,7 +44,7 @@ public class TestControlSystem : IDisposable
         _controlSystem.StartSystem();
         _controlSystem.Ascend();
         _controlSystem.Invoking(cs => cs.Descend()).Should().NotThrow<SleighNotStartedException>();
-        _controlSystem.Action.Should().Be(SleighAction.Hovering);
+        _controlSystem.GetAction().Should().Be(SleighAction.Hovering);
         _output.ToString().Trim().Should().Be($"Starting the sleigh...{Environment.NewLine}System ready.{Environment.NewLine}Ascending...{Environment.NewLine}Descending...");
     }
 
@@ -53,7 +53,7 @@ public class TestControlSystem : IDisposable
     {
         _controlSystem.StartSystem();
         _controlSystem.Invoking(cs => cs.Park()).Should().NotThrow<SleighNotStartedException>();
-        _controlSystem.Action.Should().Be(SleighAction.Parked);
+        _controlSystem.GetAction().Should().Be(SleighAction.Parked);
     }
 
     public void Dispose()
