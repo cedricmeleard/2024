@@ -12,8 +12,7 @@ public class System
     private readonly List<ReindeerPowerUnit> _reindeerPowerUnits;
     public SleighEngineStatus Status { get; set; }
     public SleighAction Action { get; set; }
-    private float _controlMagicPower = 0;
-
+    
     private readonly XmasTownAmplifiers _xmasTownAmplifiers = XmasTownAmplifiers.Build();
     
     public System(MagicStable magicStable)
@@ -77,6 +76,8 @@ public class System
 
     private bool HasEnoughMagicPower()
     {
+        float _controlMagicPower = 0;
+
         foreach (var reindeerPowerUnit in _reindeerPowerUnits)
         {
             _controlMagicPower += reindeerPowerUnit.HarnessMagicPower();
