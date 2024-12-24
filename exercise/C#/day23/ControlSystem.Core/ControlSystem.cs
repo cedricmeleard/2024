@@ -65,12 +65,8 @@ public class System
         EnsureSleighIsStarted();
         
         _dashboard.DisplayStatus("Parking...");
-
-        foreach (var reindeerPowerUnit in _reindeerPowerUnits)
-        {
-            reindeerPowerUnit.ResetHarnessing();
-        }
-
+        _reindeerPowerUnits.ForEach(r => r.ResetHarnessing());
+        
         Action = SleighAction.Parked;
     }
 
