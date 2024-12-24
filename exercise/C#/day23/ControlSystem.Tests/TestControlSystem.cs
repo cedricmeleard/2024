@@ -24,10 +24,8 @@ public class TestControlSystem : IDisposable
     public void TestStart()
     {
         // The system has been started
-        _controlSystem.Action = SleighAction.Flying;
-        _controlSystem.Status = SleighEngineStatus.Off;
         _controlSystem.StartSystem();
-        _controlSystem.Status.Should().Be(SleighEngineStatus.On);
+        _controlSystem.GetStatus().Should().Be(SleighEngineStatus.On);
         _output.ToString().Trim().Should().Be($"Starting the sleigh...{Environment.NewLine}System ready.");
     }
 

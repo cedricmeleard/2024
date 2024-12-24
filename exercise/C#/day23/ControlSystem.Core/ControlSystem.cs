@@ -4,22 +4,25 @@ namespace ControlSystem.Core;
 
 public class System(MagicStable magicStable, Dashboard dashboard)
 {
-    public SleighEngineStatus Status { get; set; }
-    public SleighAction Action { get; set; }
+    public SleighEngineStatus GetStatus()
+        => _status;
+
+    public SleighAction Action { get; private set; }
     
     private readonly ReindeerPowerUnits _reindeerPowerUnits = ReindeerPowerUnits.CreateInstance(magicStable);
+    private SleighEngineStatus _status = SleighEngineStatus.Off;
 
     public void StartSystem()
     {
         dashboard.DisplayStatus("Starting the sleigh...");
-        Status = SleighEngineStatus.On;
+        _status = SleighEngineStatus.On;
         dashboard.DisplayStatus("System ready.");
     }
     
     public void StopSystem()
     {
         dashboard.DisplayStatus("Stopping the sleigh...");
-        Status = SleighEngineStatus.Off;
+        _status = SleighEngineStatus.Off;
         dashboard.DisplayStatus("System shutdown.");
     }
     
@@ -45,14 +48,13 @@ public class System(MagicStable magicStable, Dashboard dashboard)
         EnsureSleighIsStarted();
         
         dashboard.DisplayStatus("Parking...");
-        
         _reindeerPowerUnits.ResetHarnessing();
         Action = SleighAction.Parked;
     }
 
     private void EnsureSleighIsStarted()
     {
-        if (Status != SleighEngineStatus.On) throw new SleighNotStartedException();
+        if (GetStatus() != SleighEngineStatus.On) throw new SleighNotStartedException();
     }
     
     private void EnsureSufficientMagicPower()
