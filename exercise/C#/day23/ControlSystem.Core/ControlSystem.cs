@@ -2,21 +2,14 @@ using ControlSystem.External;
 
 namespace ControlSystem.Core;
 
-public class System
+public class System(MagicStable magicStable)
 {
-    private readonly Dashboard _dashboard;
-    
+    private readonly Dashboard _dashboard = new();
     public SleighEngineStatus Status { get; set; }
     public SleighAction Action { get; set; }
     
-    private readonly ReindeerPowerUnits _reindeerPowerUnits;
+    private readonly ReindeerPowerUnits _reindeerPowerUnits = ReindeerPowerUnits.CreateInstance(magicStable);
 
-    public System(MagicStable magicStable)
-    {
-        _dashboard = new Dashboard();
-        _reindeerPowerUnits = ReindeerPowerUnits.CreateInstance(magicStable);
-    }
-    
     public void StartSystem()
     {
         _dashboard.DisplayStatus("Starting the sleigh...");
