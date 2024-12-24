@@ -5,10 +5,10 @@ namespace ControlSystem.Core;
 public class ReindeerPowerUnits
 {
     private const int XmasSpirit = 40;
-    public List<ReindeerPowerUnit> PowerUnits { get; }
+    private readonly List<ReindeerPowerUnit> _powerUnits;
     private ReindeerPowerUnits(List<ReindeerPowerUnit> reindeerPowerUnits)
     {
-        PowerUnits = reindeerPowerUnits;
+        _powerUnits = reindeerPowerUnits;
     }
 
     public static ReindeerPowerUnits CreateInstance(MagicStable magicStable)
@@ -25,6 +25,6 @@ public class ReindeerPowerUnits
             .Select(reindeer => new ReindeerPowerUnit(reindeer,xmasTownAmplifiers.GetNext()))
             .ToList();
 
-    public void ResetHarnessing() => PowerUnits.ForEach(r => r.ResetHarnessing());
-    public bool HasEnoughMagicPower(System system) => PowerUnits.Sum(r => r.CheckMagicPower()) >= XmasSpirit;
+    public void ResetHarnessing() => _powerUnits.ForEach(r => r.ResetHarnessing());
+    public bool HasEnoughMagicPower() => _powerUnits.Sum(r => r.CheckMagicPower()) >= XmasSpirit;
 }

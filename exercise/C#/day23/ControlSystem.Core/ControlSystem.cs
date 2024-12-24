@@ -34,7 +34,7 @@ public class System
     public void Ascend()
     {
         EnsureSleighIsStarted();
-        if (!_reindeerPowerUnits.HasEnoughMagicPower(this)) throw new ReindeersNeedRestException();
+        if (!_reindeerPowerUnits.HasEnoughMagicPower()) throw new ReindeersNeedRestException();
         
         _dashboard.DisplayStatus("Ascending...");
         Action = SleighAction.Flying;
