@@ -4,23 +4,17 @@ public class Business(Factory factory, Inventory inventory, WishList wishList)
 {
     public Sleigh LoadGiftsInSleigh(params Child[] children)
     {
-        var list = new Sleigh();
+        var inSleigh = new Sleigh();
         foreach (var child in children)
         {
-            var gift = wishList.IdentifyGift(child);
-            if (gift is not null)
-            {
-                var manufactured = factory.FindManufacturedGift(gift);
-                if (manufactured is not null)
-                {
-                    var finalGift = inventory.PickUpGift(manufactured.BarCode);
-                    if (finalGift is not null)
-                    {
-                        list.Add(child, $"Gift: {finalGift.Name} has been loaded!");
-                    }
-                }
-            }
+            wishList
+                .IdentifyGift(child)
+                .Bind(factory.FindManufacturedGift)
+                .Bind(manufactured => inventory.PickUpGift(manufactured.BarCode))
+                .Match(
+                    gift => inSleigh.AddGift(child, gift),
+                    error => inSleigh.AddError(child, error.Message));
         }
-        return list;
+        return inSleigh;
     }
 }

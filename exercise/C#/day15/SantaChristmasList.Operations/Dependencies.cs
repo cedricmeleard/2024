@@ -1,25 +1,21 @@
+using LanguageExt.Common;
+
 namespace SantaChristmasList.Operations;
 
 public class Factory : Dictionary<Gift, ManufacturedGift>
 {
-    public ManufacturedGift FindManufacturedGift(Gift gift)
-    {
-        return ContainsKey(gift) ? this[gift] : null;
-    }
+    public Either<Error, ManufacturedGift> FindManufacturedGift(Gift gift)
+        => ContainsKey(gift) ? this[gift] : Error.New(SleighMessages.GiftNotManufacturedMessage);
 }
 
 public class Inventory : Dictionary<string, Gift>
 {
-    public Gift PickUpGift(string barCode)
-    {
-        return ContainsKey(barCode) ? this[barCode] : null;
-    }
+    public Either<Error, Gift> PickUpGift(string barCode)
+        => ContainsKey(barCode) ? this[barCode] : Error.New(SleighMessages.GiftMisplacedByElvesMessage);
 }
 
 public class WishList : Dictionary<Child, Gift>
 {
-    public Gift IdentifyGift(Child child)
-    {
-        return ContainsKey(child) ? this[child] : null;
-    }
+    public Either<Error, Gift> IdentifyGift(Child child)
+        => ContainsKey(child) ? this[child] : Error.New(SleighMessages.ChildNotNiceThisYearMessage);
 }
