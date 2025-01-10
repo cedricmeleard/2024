@@ -1,97 +1,63 @@
 using ControlSystem.External;
 
-namespace ControlSystem.Core
+namespace ControlSystem.Core;
+
+public class System(MagicStable magicStable, Dashboard dashboard)
 {
-    public class System
+    public SleighEngineStatus GetStatus() => _status;
+    public SleighAction GetAction() => _action;
+
+    private readonly ReindeerPowerUnits _reindeerPowerUnits = ReindeerPowerUnits.CreateInstance(magicStable);
+    private SleighEngineStatus _status = SleighEngineStatus.Off;
+    private SleighAction _action;
+
+    public void StartSystem()
     {
-        private const int XmasSpirit = 40;
-        private readonly Dashboard _dashboard;
-        private readonly MagicStable _magicStable = new MagicStable();
-        private readonly List<ReindeerPowerUnit> _reindeerPowerUnits;
-        public SleighEngineStatus Status { get; set; }
-        public SleighAction Action { get; set; }
-        private float _controlMagicPower = 0;
+        dashboard.DisplayStatus("Starting the sleigh...");
+        _status = SleighEngineStatus.On;
+        dashboard.DisplayStatus("System ready.");
+    }
+    
+    public void StopSystem()
+    {
+        dashboard.DisplayStatus("Stopping the sleigh...");
+        _status = SleighEngineStatus.Off;
+        dashboard.DisplayStatus("System shutdown.");
+    }
+    
+    public void Ascend()
+    {
+        EnsureSleighIsStarted();
+        EnsureSufficientMagicPower();
+        
+        dashboard.DisplayStatus("Ascending...");
+        _action = SleighAction.Flying;
+    }
+    
+    public void Descend()
+    {
+        EnsureSleighIsStarted();
+        
+        dashboard.DisplayStatus("Descending...");
+        _action = SleighAction.Hovering;
+    }
 
-        public System()
-        {
-            _dashboard = new Dashboard();
-            _reindeerPowerUnits = BringAllReindeers();
-        }
+    public void Park()
+    {
+        EnsureSleighIsStarted();
+        
+        dashboard.DisplayStatus("Parking...");
+        _reindeerPowerUnits.ResetHarnessing();
+        _action = SleighAction.Parked;
+    }
 
-        private List<ReindeerPowerUnit> BringAllReindeers() =>
-            _magicStable.GetAllReindeers().Select(AttachPowerUnit).ToList();
-
-        public ReindeerPowerUnit AttachPowerUnit(Reindeer reindeer)
-        {
-            return new ReindeerPowerUnit(reindeer);
-        }
-
-        public void StartSystem()
-        {
-            _dashboard.DisplayStatus("Starting the sleigh...");
-            Status = SleighEngineStatus.On;
-            _dashboard.DisplayStatus("System ready.");
-        }
-
-        public void Ascend()
-        {
-            if (Status == SleighEngineStatus.On)
-            {
-                foreach (var reindeerPowerUnit in _reindeerPowerUnits)
-                {
-                    _controlMagicPower += reindeerPowerUnit.HarnessMagicPower();
-                }
-
-                if (CheckReindeerStatus())
-                {
-                    _dashboard.DisplayStatus("Ascending...");
-                    Action = SleighAction.Flying;
-                    _controlMagicPower = 0;
-                }
-                else throw new ReindeersNeedRestException();
-            }
-            else
-            {
-                throw new SleighNotStartedException();
-            }
-        }
-
-        public void Descend()
-        {
-            if (Status == SleighEngineStatus.On)
-            {
-                _dashboard.DisplayStatus("Descending...");
-                Action = SleighAction.Hovering;
-            }
-            else throw new SleighNotStartedException();
-        }
-
-        public void Park()
-        {
-            if (Status == SleighEngineStatus.On)
-            {
-                _dashboard.DisplayStatus("Parking...");
-
-                foreach (var reindeerPowerUnit in _reindeerPowerUnits)
-                {
-                    reindeerPowerUnit.Reindeer.TimesHarnessing = 0;
-                }
-
-                Action = SleighAction.Parked;
-            }
-            else throw new SleighNotStartedException();
-        }
-
-        public void StopSystem()
-        {
-            _dashboard.DisplayStatus("Stopping the sleigh...");
-            Status = SleighEngineStatus.Off;
-            _dashboard.DisplayStatus("System shutdown.");
-        }
-
-        private bool CheckReindeerStatus()
-        {
-            return _controlMagicPower >= XmasSpirit;
-        }
+    private void EnsureSleighIsStarted()
+    {
+        if (GetStatus() != SleighEngineStatus.On) throw new SleighNotStartedException();
+    }
+    
+    private void EnsureSufficientMagicPower()
+    {
+        if (!_reindeerPowerUnits.HasEnoughMagicPower()) throw new ReindeersNeedRestException();
     }
 }
