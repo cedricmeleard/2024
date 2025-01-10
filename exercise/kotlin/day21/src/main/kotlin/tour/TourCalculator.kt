@@ -6,8 +6,6 @@ import arrow.core.right
 import java.time.Duration
 import java.time.LocalTime
 
-data class Step(val time: LocalTime, val label: String, val deliveryTime: Int)
-
 class TourCalculator(private var steps: List<Step>) {
     private var calculated: Boolean = false
     private var deliveryTime: Double = 0.0

@@ -15,6 +15,7 @@ dependencies {
 
     val kotestVersion = "5.8.0"
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("com.approvaltests:approvaltests:18.0.0")
     testImplementation(kotlin("test"))
 }
 
