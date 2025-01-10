@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel", "Travel\Travel.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.Tests", "Travel.Tests\Travel.Tests.csproj", "{18F263CB-DCD8-470E-94AC-0F2594E5A7B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{20948D3E-C0D7-47ED-9777-68FC6BFE2E92}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{ED748491-CC3E-43F3-9903-0F2E63752112}"
+	ProjectSection(SolutionItems) = preProject
+		Benchmark\readme.md = Benchmark\readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +28,10 @@ Global
 		{18F263CB-DCD8-470E-94AC-0F2594E5A7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18F263CB-DCD8-470E-94AC-0F2594E5A7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18F263CB-DCD8-470E-94AC-0F2594E5A7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20948D3E-C0D7-47ED-9777-68FC6BFE2E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20948D3E-C0D7-47ED-9777-68FC6BFE2E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20948D3E-C0D7-47ED-9777-68FC6BFE2E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20948D3E-C0D7-47ED-9777-68FC6BFE2E92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
